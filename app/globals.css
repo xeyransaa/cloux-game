@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.slick-dots{
+  bottom: 30px !important;
+}
+
+.top-game{
+  display: flex !important;
+  
+}
+
+
+.slick-dotted.slick-slider
+{
+    margin-bottom: 0 !important;
+}
+
+.custom-dot:before {
+  content: "" !important;
+  width: 15px !important;
+  height: 15px !important;
+  color: transparent !important;
+  border: 1px solid white !important;
+  border-radius: 50% !important;
+  opacity: 1 !important;
+}
+.slick-dots li.slick-active .custom-dot:before {
+  background-color: white !important;
+  opacity: 1 !important;
+}  
+
+.button.active{
+  background-color: #FFC311;
+  color: white;
+}
