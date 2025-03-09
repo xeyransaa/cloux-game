@@ -22,7 +22,7 @@ const Footer = () => {
       .then((c) => c.json())
       .then((c) => setBlogs(c));
   };
-  
+
   useEffect(() => {
     getBlogs();
   }, []);
@@ -67,11 +67,8 @@ const Footer = () => {
                       </span>
                     </a>
                   </li>
-                  
-                  
                 </ul>
                 <ul>
-                  
                   <li className="mb-[8px]">
                     <a
                       href="/about"
@@ -82,7 +79,7 @@ const Footer = () => {
                       </span>
                     </a>
                   </li>
-                  
+
                   <li className="mb-[8px]">
                     <a
                       href="/contact"
@@ -96,7 +93,7 @@ const Footer = () => {
                 </ul>
               </div>
             </div>
-           
+
             <div className="apps">
               <div className="title uppercase font-black text-[24px] mb-[20px]">
                 <h2 className="text-white">
@@ -111,11 +108,7 @@ const Footer = () => {
                   <div className="flex items-center">
                     <FaApple className="mr-[10px] text-[26px]" />
                     <div className="buy text-[13px]">
-                      Buy now via <strong>
-                      Apple Store
-
-                      </strong>
-                      
+                      Buy now via <strong>Apple Store</strong>
                     </div>
                   </div>
                 </a>
@@ -127,7 +120,6 @@ const Footer = () => {
                     <FaGooglePlay className="mr-[10px] text-[26px]" />
                     <div className="buy text-[13px]">
                       Buy now via <strong>Google Play</strong>
-                      
                     </div>
                   </div>
                 </a>
@@ -139,7 +131,6 @@ const Footer = () => {
                     <FaSteamSymbol className="mr-[10px] text-[26px]" />
                     <div className="buy text-[13px]">
                       Buy now via <strong>Steam</strong>
-                      
                     </div>
                   </div>
                 </a>
@@ -151,7 +142,6 @@ const Footer = () => {
                     <FaWindows className="mr-[10px] text-[26px]" />
                     <div className="buy text-[13px]">
                       Download via <strong>WinStore</strong>
-                      
                     </div>
                   </div>
                 </a>
@@ -163,7 +153,6 @@ const Footer = () => {
                     <FaAmazon className="mr-[10px] text-[26px]" />
                     <div className="buy text-[13px]">
                       Buy now via <strong>Amazon</strong>
-                      
                     </div>
                   </div>
                 </a>
@@ -175,7 +164,6 @@ const Footer = () => {
                     <FaPaypal className="mr-[10px] text-[26px]" />
                     <div className="buy text-[13px]">
                       Download via <strong>PayPal</strong>
-                      
                     </div>
                   </div>
                 </a>
@@ -190,29 +178,36 @@ const Footer = () => {
               <div className="contact-list mb-[25px]">
                 <ul>
                   <li className="flex items-center mb-[10px]">
-                    <FaLocationDot className="text-yel mr-[10px]"/>
-                    <span className="text-white text-[14px]">Walking Street, Los Angeles, California, USA
+                    <FaLocationDot className="text-yel mr-[10px]" />
+                    <span className="text-white text-[14px]">
+                      Walking Street, Los Angeles, California, USA
                     </span>
                   </li>
                   <li className="flex items-center mb-[10px]">
-                    <FaEnvelope className="text-yel mr-[10px]"/>
-                    <a href="mailto:info@cloux.com" className="text-white text-[14px] hover:text-yel transition duration-200">
-                    info@cloux.com
+                    <FaEnvelope className="text-yel mr-[10px]" />
+                    <a
+                      href="mailto:info@cloux.com"
+                      className="text-white text-[14px] hover:text-yel transition duration-200"
+                    >
+                      info@cloux.com
                     </a>
                   </li>
                   <li className="flex items-center mb-[10px]">
-                    <FaPhoneFlip className="text-yel mr-[10px]"/>
-                    <a href="tel:+06749876659" className="text-white text-[14px] hover:text-yel transition duration-200">
-                    0674 987 66 59
+                    <FaPhoneFlip className="text-yel mr-[10px]" />
+                    <a
+                      href="tel:+06749876659"
+                      className="text-white text-[14px] hover:text-yel transition duration-200"
+                    >
+                      0674 987 66 59
                     </a>
                   </li>
                   <li className="flex items-center mb-[10px]">
-                    <FaFax className="text-yel mr-[10px]"/>
-                    <span className="text-white text-[14px]">1923 236 12 96
+                    <FaFax className="text-yel mr-[10px]" />
+                    <span className="text-white text-[14px]">
+                      1923 236 12 96
                     </span>
                   </li>
                 </ul>
-
               </div>
               <div className="desc mb-[20px] text-white text-[14px]">
                 <p>
@@ -221,8 +216,6 @@ const Footer = () => {
                   sapiente cum commodi quasi, blanditiis iusto eveniet atque.
                 </p>
               </div>
-              
-              
             </div>
           </div>
         </div>
@@ -231,17 +224,20 @@ const Footer = () => {
         <div className="footer-wrapper min-[1200px]:max-w-[1140px] max-w-full mx-auto">
           <div className="flex justify-center items-center lg:flex-row flex-col">
             <div className="flex items-center flex-col lg:flex-row">
-            <a href="">
-                <Image src="/img/logo-2.png" width={0} height={0} sizes="100vw" style={{width: '120px', height:'auto'}} />
+              <a href="">
+                <Image
+                  alt="logo"
+                  src="/img/logo-2.png"
+                  width={0}
+                  height={0}
+                  sizes="100vw"
+                  style={{ width: "120px", height: "auto" }}
+                />
               </a>
               <p className="text-[13px] m-[15px]">
                 Copyright © 2018 Cloux - All rights reserved.
               </p>
-
             </div>
-              
-            
-            
           </div>
         </div>
       </div>
