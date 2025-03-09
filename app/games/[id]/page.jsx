@@ -13,7 +13,7 @@ import SignUp from "@/components/SignUp";
 import SocialMedia from "@/components/SocialMedia";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaCheck,
   FaFacebookF,
@@ -50,8 +50,7 @@ const GameSingle = () => {
     setActiveOS(name);
   };
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <>
+    <>
       <Header />
       <Heading name={game.name} />
       <section className="main">
@@ -492,9 +491,6 @@ const GameSingle = () => {
         />
       )}
     </>
-
-    </Suspense>
-    
   );
 };
 

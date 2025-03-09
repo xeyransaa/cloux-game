@@ -10,7 +10,7 @@ import Newsletter from "@/components/Newsletter";
 import SignUp from "@/components/SignUp";
 import SocialMedia from "@/components/SocialMedia";
 import { useParams } from "next/navigation";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const PlatformGames = () => {
   const { name } = useParams();
@@ -30,45 +30,43 @@ const PlatformGames = () => {
   const decodedName = decodeURIComponent(name);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <>
-        <Header />
-        <Heading name={`${decodedName} games`} />
-        <section className="main">
-          <div className="games min-[1200px]:max-w-[1140px] max-w-full mx-auto px-[1.154rem] md:px-[2.308rem] min-[1200px]:px-[15px] py-[80px]">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-              {[...platformGames]
-                ?.sort((a, b) => (a.dateCreated > b.dateCreated ? 1 : -1))
-                .map((g) => (
-                  <GameDetail {...g} />
-                ))}
-            </div>
+    <>
+      <Header />
+      <Heading name={`${decodedName} games`} />
+      <section className="main">
+        <div className="games min-[1200px]:max-w-[1140px] max-w-full mx-auto px-[1.154rem] md:px-[2.308rem] min-[1200px]:px-[15px] py-[80px]">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            {[...platformGames]
+              ?.sort((a, b) => (a.dateCreated > b.dateCreated ? 1 : -1))
+              .map((g) => (
+                <GameDetail {...g} />
+              ))}
           </div>
-        </section>
-        <Newsletter />
-        <SocialMedia />
-        <Footer />
+        </div>
+      </section>
+      <Newsletter />
+      <SocialMedia />
+      <Footer />
 
-        {showLogin && (
-          <Login
-            onClose={() => setShowLogin(false)}
-            switchToSignUp={() => {
-              setShowLogin(false);
-              setShowSignUp(true);
-            }}
-          />
-        )}
-        {showSignUp && (
-          <SignUp
-            onClose={() => setShowSignUp(false)}
-            switchToLogin={() => {
-              setShowSignUp(false);
-              setShowLogin(true);
-            }}
-          />
-        )}
-      </>
-    </Suspense>
+      {showLogin && (
+        <Login
+          onClose={() => setShowLogin(false)}
+          switchToSignUp={() => {
+            setShowLogin(false);
+            setShowSignUp(true);
+          }}
+        />
+      )}
+      {showSignUp && (
+        <SignUp
+          onClose={() => setShowSignUp(false)}
+          switchToLogin={() => {
+            setShowSignUp(false);
+            setShowLogin(true);
+          }}
+        />
+      )}
+    </>
   );
 };
 
