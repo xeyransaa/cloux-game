@@ -64,7 +64,7 @@ const GamesList = () => {
           ))}
         </div>
         {games.length > gamesPerPage && (
-          <ul className="unstyled flex flex-row flex-wrap items-center justify-center mt-[50px] gap-y-[20px]">
+          <ul className="unstyled flex flex-row flex-wrap items-center justify-center mt-[50px] gap-y-[20px] px-2">
             <li
               className="relative"
               onClick={() => {

@@ -292,7 +292,7 @@ const Home = () => {
 
       <section className="games pb-[150px]">
         <div className="platform-names mb-[60px]" ref={ref}>
-          <ul className="unstyled flex justify-center items-center">
+          <ul className="unstyled flex flex-row flex-wrap gap-y-6 justify-center items-center px-2">
             <li className="relative">
               <PlatformButton
                 name="All"

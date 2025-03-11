@@ -49,6 +49,17 @@ const GameSingle = () => {
     setReqsList(reqsList);
     setActiveOS(name);
   };
+  const uniqueLanguages = game.languages
+    ? game.languages.filter(
+        (lang, index, self) =>
+          index ===
+          self.findIndex(
+            (l) =>
+              l.name === lang.name &&
+              JSON.stringify(l.gameLanguageTypes) === JSON.stringify(lang.gameLanguageTypes)
+          )
+      )
+    : [];
   return (
     <>
       <Header />
@@ -72,69 +83,9 @@ const GameSingle = () => {
                   About <span className="text-yel">{game.name}</span>
                 </h1>
                 <p className="text-[14px] mb-[20px]">
-                  Purus non enim praesent elementum facilisis. Neque vitae
-                  tempus quam pellentesque. Facilisis mauris sit amet massa
-                  vitae tortor condimentum lacinia. Rhoncus dolor purus non enim
-                  praesent elementum facilisis leo. Quisque non tellus orci ac
-                  auctor augue mauris. Lobortis mattis aliquam faucibus purus.
-                  Cras pulvinar mattis nunc sed blandit libero volutpat. Amet
-                  porttitor eget dolor morbi non arcu risus. Proin sagittis nisl
-                  rhoncus mattis rhoncus urna neque viverra. Molestie at
-                  elementum eu facilisis sed. In aliquam sem fringilla ut morbi.
-                  Ut placerat orci nulla pellentesque dignissim enim sit amet
-                  venenatis. Lacus sed turpis tincidunt id aliquet risus feugiat
-                  in diam sit.
+                  {game.description}
                 </p>
-                <p className="text-[14px] mb-[20px]">
-                  Elementum nibh. Neque aliquam vestibulum morbi blandit cursus
-                  risus at ultrices. Nec tincidunt praesent semper feugiat nibh
-                  sed pulvinar. Ornare aenean euismod elementum nisi quis
-                  eleifend quam adipiscing vitae. At imperdiet dui accumsan sit
-                  amet nulla facilisi. Morbi tincidunt ornare massa eget egestas
-                  purus viverra. Commodo viverra maecenas accumsan lacus vel. In
-                  fermentum posuere urna nec tincidunt. Malesuada fames ac
-                  turpis egestas sed tempus urna. Lorem sed risus ultricies
-                  tristique nulla aliquet enim tortor. Ultricies lacus sed
-                  turpis tincidunt id. Purus ut faucibus pulvinar elementum
-                  integer enim neque volutpat ac. Non pulvinar neque laoreet
-                  suspendisse. Vestibulum rhoncus est pellentesque elit
-                  ullamcorper dignissim cras tincidunt lobortis malesuada.
-                </p>
-                <ul className="list-disc ml-[25px] mb-[20px] text-[14px]">
-                  <li>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                  </li>
-                  <li>
-                    Sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
-                  </li>
-                  <li>
-                    Sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
-                  </li>
-                  <li>
-                    Sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
-                  </li>
-                  <li>
-                    Sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
-                  </li>
-                </ul>
-                <p className="text-[14px] mb-[20px]">
-                  Purus non enim praesent elementum facilisis. Neque vitae
-                  tempus quam pellentesque. Facilisis mauris sit amet massa
-                  vitae tortor condimentum lacinia. Rhoncus dolor purus non enim
-                  praesent elementum facilisis leo. Quisque non tellus orci ac
-                  auctor augue mauris. Lobortis mattis aliquam faucibus purus.
-                  Cras pulvinar mattis nunc sed blandit libero volutpat. Amet
-                  porttitor eget dolor morbi non arcu risus. Proin sagittis nisl
-                  rhoncus mattis rhoncus urna neque viverra. Molestie at
-                  elementum eu facilisis sed. In aliquam sem fringilla ut morbi.
-                  Ut placerat orci nulla pellentesque dignissim enim sit amet
-                  venenatis. Lacus sed turpis tincidunt id aliquet risus feugiat
-                  in diam sit.
-                </p>
+                
               </div>
               <div
                 className="details md:p-[30px] md:pr-[45px] pr-[10px] md:shadow-[0_0_3rem_rgba(0,0,0,0.23)] md:mb-[30px] mb-[50px]"
@@ -275,12 +226,13 @@ const GameSingle = () => {
                     </li>
                   </ul>
                 </div>
-                <div className="additional mb-[30px]">
+                {game.additionalNotes && <div className="additional mb-[30px]">
                   <p className="uppercase font-bold text-[12px] mb-[10px]">
                     additional notes:
                   </p>
                   <p className="text-[12px]">{game.additionalNotes}</p>
-                </div>
+                </div>}
+                
                 <div className="buy flex items-center justify-between">
                   <div className="price">
                     <h2 className="uppercase text-[18px] font-bold">
@@ -325,7 +277,7 @@ const GameSingle = () => {
                         Release date:
                       </p>
                       <div className="text-[12px] w-[50%]">
-                        December 14, 2017
+                        {`${game.releaseMonth} ${game.releaseDay}, ${game.releaseYear}`}
                       </div>
                     </li>
                     <li className="flex items-center mb-[15px]">
@@ -364,35 +316,35 @@ const GameSingle = () => {
                       <div className="flex items-center w-[50%]">
                         <a
                           className="mr-[10px] hover:text-yel transition duration-200 ease-in"
-                          href=""
+                          href={game.facebookLink}
                           target="_blank"
                         >
                           <FaFacebookF />
                         </a>
                         <a
                           className="mr-[10px] hover:text-yel transition duration-200 ease-in"
-                          href=""
+                          href={game.twitterLink}
                           target="_blank"
                         >
                           <FaTwitter />
                         </a>
                         <a
                           className="mr-[10px] hover:text-yel transition duration-200 ease-in"
-                          href=""
+                          href={game.googlePlusLink}
                           target="_blank"
                         >
                           <FaGooglePlusG />
                         </a>
                         <a
                           className="mr-[10px] hover:text-yel transition duration-200 ease-in"
-                          href=""
+                          href={game.youtubeLink}
                           target="_blank"
                         >
                           <FaYoutube />
                         </a>
                         <a
                           className="mr-[10px] hover:text-yel transition duration-200 ease-in"
-                          href=""
+                          href={game.twitchLink}
                           target="_blank"
                         >
                           <FaTwitch />
@@ -420,47 +372,36 @@ const GameSingle = () => {
                         Subtitles
                       </p>
                     </li>
-                    <li className="flex items-center justify-between  border-b-[1px] py-[10px]">
+                    {uniqueLanguages?.map(l => (
+                      <li className="flex items-center justify-between  border-b-[1px] py-[10px]">
                       <a href="" className="text-[12px] w-[28%]">
-                        English
+                        {l.name}
                       </a>
-                      <FaCheck className="text-yel w-[27%]" />
-                      <FaCheck className="text-yel w-[16%]" />
-                      <FaCheck className="text-yel w-[26%]" />
-                    </li>
-                    <li className="flex items-center justify-between border-b-[1px] py-[10px]">
-                      <a href="" className="text-[12px] w-[28%]">
-                        German
-                      </a>
-                      <FaCheck className="text-yel w-[27%]" />
-                      <FaCheck className="text-yel w-[16%]" />
-                      <FaCheck className="text-yel w-[26%]" />
-                    </li>
-                    <li className="flex items-center justify-between border-b-[1px] py-[10px]">
-                      <a href="" className="text-[12px] w-[28%]">
-                        Portegese
-                      </a>
-                      <FaCheck className="text-yel w-[27%]" />
-                      <p className="text-yel w-[16%]" />
-                      <FaCheck className="text-yel w-[26%]" />
-                    </li>
-                    <li className="flex items-center justify-between border-b-[1px] py-[10px]">
-                      <a href="" className="text-[12px] w-[28%]">
-                        Spanish
-                      </a>
-                      <FaCheck className="text-yel w-[27%]" />
-                      <p className="text-yel w-[16%]" />
-                      <p className="text-yel w-[26%]" />
+                     <span className="text-yel w-[27%] flex justify-center" >
+                     {
+                          l.gameLanguageTypes.includes('Interface') && <FaCheck />}
+                     </span>
+                     <span className="text-yel w-[16%] flex justify-center">
+                     {l.gameLanguageTypes.includes('Audio') && <FaCheck  />}
+
+                     </span>
+                      
+                        <span className="text-yel w-[26%] flex justify-center" >
+                        {l.gameLanguageTypes.includes('Subtitle') && <FaCheck />
+
+}
+                        </span>
+                         
+                         
+                        
+
+                      
+
                     </li>
 
-                    <li className="flex items-center justify-between py-[10px]">
-                      <a href="" className="text-[12px] w-[28%]">
-                        Turkish
-                      </a>
-                      <FaCheck className="text-yel w-[27%]" />
-                      <FaCheck className="text-yel w-[16%]" />
-                      <FaCheck className="text-yel w-[26%]" />
-                    </li>
+                    ))}
+                    
+                    
                   </ul>
                 </div>
               </div>
