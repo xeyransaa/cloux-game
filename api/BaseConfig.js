@@ -1,1 +1,1 @@
-export const BASE_URL="https://localhost:7191/api/"
+export const BASE_URL="https://clouxapiapi.azure-api.net/api/"
