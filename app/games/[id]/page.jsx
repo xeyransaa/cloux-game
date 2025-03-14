@@ -1,8 +1,7 @@
 "use client";
+
 import { BASE_URL } from "@/api/BaseConfig";
-import FancyButton from "@/components/FancyButton";
 import Footer from "@/components/Footer";
-import GameDetail from "@/components/GameDetail";
 import Header from "@/components/Header";
 import Heading from "@/components/Heading";
 import Login from "@/components/Login";
@@ -19,7 +18,6 @@ import {
   FaCheck,
   FaFacebookF,
   FaGears,
-  FaGlobe,
   FaGooglePlusG,
   FaRegClock,
   FaShareNodes,
@@ -27,7 +25,6 @@ import {
   FaTv,
   FaTwitch,
   FaTwitter,
-  FaUsers,
   FaYoutube,
 } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
@@ -70,13 +67,25 @@ const GameSingle = () => {
     }, [game]);
    
   const dispatch = useDispatch();
-  const {cartItems} = useSelector(state=>state.cart)
-
+  const cartItems = useSelector((state) => state.cart.cartItems);
   const handleAddToCart = (id) => {
-    const findItem = cartItems.length > 0 ? cartItems.find(ct=>ct.id===id) : null;
-    const quantity = findItem ? findItem.quantity + 1 : 1;
-    dispatch(addToCart(id, quantity))
-  }
+      const findItem = cartItems.length > 0 ? cartItems.find(ct=>ct.id===id) : null;
+      const quantity = findItem ? findItem.quantity + 1 : 1;
+      dispatch(addToCart({id, quantity}))
+      
+  };
+      
+  
+
+  // const handleAddToCart = (id) => {
+  //   if (!id) {
+  //     console.error("handleAddToCart: Received undefined ID");
+  //     return;
+  //   }
+  //   const findItem = cartItems.length > 0 ? cartItems.find(ct=>ct.id===id) : null;
+  //   const quantity = findItem ? findItem.quantity + 1 : 1;
+  //   dispatch(addToCart({id, quantity}))
+  // }
   return (
     <>
       <Header />
@@ -204,9 +213,11 @@ const GameSingle = () => {
                       </span>
                     </h2>
                   </div>
-                  <ul className="unstyled">
-                    <PlatformButton name="add to cart" onClick={handleAddToCart(game.id)} />
-                  </ul>
+                  <div onClick={() => handleAddToCart(game.id)}>
+                    <PlatformButton name="add to cart"/>
+                    <div>{game.name}</div><span>{cartItems.quantity}</span>
+
+                  </div>
                 </div>
               </div>
             </div>

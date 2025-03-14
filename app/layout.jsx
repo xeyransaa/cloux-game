@@ -1,8 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
-import { Provider } from "react-redux";
-import store from "@/Redux/store";
+import ReduxProvider from "@/components/ReduxProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,14 +13,19 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <Provider store={store}>
+    
       <html lang="en" suppressHydrationWarning={true}>
-      <body className={inter.className} >{children}
-      <Script src="/scripts/Script.js"/>
+      <body className={inter.className} >
+        <ReduxProvider>
+        {children}
+        <Script src="/scripts/Script.js"/>
+
+        </ReduxProvider>
+        
       </body>
     </html>
 
-    </Provider>
+ 
     
   );
 }
