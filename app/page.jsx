@@ -154,6 +154,7 @@ const Home = () => {
 
   return (
     <>
+    
       <Header
         onClickLogin={() => setShowLogin(true)}
         onClickSignup={() => setShowSignUp(true)}

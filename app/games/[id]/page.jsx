@@ -11,6 +11,7 @@ import PlatformButton from "@/components/PlatformButton";
 
 import SignUp from "@/components/SignUp";
 import SocialMedia from "@/components/SocialMedia";
+import { addToCart } from "@/Redux/features/Cart/CartSlice";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -29,6 +30,7 @@ import {
   FaUsers,
   FaYoutube,
 } from "react-icons/fa6";
+import { useDispatch, useSelector } from "react-redux";
 
 const GameSingle = () => {
   const { id } = useParams();
@@ -60,6 +62,21 @@ const GameSingle = () => {
           )
       )
     : [];
+
+    useEffect(() => {
+      if (game.minimumReqs && game.minimumReqs.length > 0) {
+        setReqsList(game.minimumReqs[0].systemRequirements);
+      }
+    }, [game]);
+   
+  const dispatch = useDispatch();
+  const {cartItems} = useSelector(state=>state.cart)
+
+  const handleAddToCart = (id) => {
+    const findItem = cartItems.length > 0 ? cartItems.find(ct=>ct.id===id) : null;
+    const quantity = findItem ? findItem.quantity + 1 : 1;
+    dispatch(addToCart(id, quantity))
+  }
   return (
     <>
       <Header />
@@ -92,140 +109,85 @@ const GameSingle = () => {
                 id="buy"
               >
                 <h1 className="font-black text-[24px] mb-[20px] uppercase">
-                  System <span className="text-yel">requirements</span>
+                  Minimum <span className="text-yel">system requirements</span>
                 </h1>
                 <ul className="unstyled flex my-[40px]">
-                  <li>
+                  {game.minimumReqs?.map(reqs => (
+                    <li>
                     <PlatformButton
-                      name="Windows"
-                      isActive={activeOS === "Windows"}
-                      onClick={() => handleButtonClick("Windows", reqsList)}
+                      name={reqs.osName}
+                      isActive={activeOS === reqs.osName}
+                      onClick={() => handleButtonClick(reqs.osName, reqs.systemRequirements)}
                     />
                   </li>
-                  <li>
-                    <PlatformButton
-                      name="Mac OS X"
-                      isActive={activeOS === "Mac OS X"}
-                      onClick={() => handleButtonClick("Mac OS X", reqsList)}
-                    />
-                  </li>
-                  <li>
-                    <PlatformButton
-                      name="Linux"
-                      isActive={activeOS === "Linux"}
-                      onClick={() => handleButtonClick("Linux", reqsList)}
-                    />
-                  </li>
+                    
+                  )
+
+                  )}
                 </ul>
                 <div className="minimum mb-[30px]">
-                  <h2 className="uppercase text-yel text-[12px] font-black mb-[15px]">
-                    minimum:
-                  </h2>
+                  
                   <ul className="">
-                    <li className="flex items-center mb-[15px]">
+                  {reqsList.os && <li className="flex items-center mb-[15px]">
+                      
                       <p className="uppercase font-bold text-[12px] w-[20%]">
                         OS:
                       </p>
                       <p className="text-[12px] w-[70%]">
-                        Windows 10 64 Bit, Windows 8.1 64 Bit, Windows 8 64 Bit,
-                        Win 7 64 Bit
+                        {reqsList.os}
                       </p>
-                    </li>
-                    <li className="flex items-center mb-[15px]">
+                    </li>}
+                    {reqsList.processor && <li className="flex items-center mb-[15px]">
                       <p className="uppercase font-bold text-[12px] w-[20%]">
                         processor:
                       </p>
                       <p className="text-[12px] w-[70%]">
-                        Intel Core 2 Quad CPU Q6600 @ 2.40GHz (4 CPUs)
+                        {reqsList.processor}
                       </p>
-                    </li>
-                    <li className="flex items-center mb-[15px]">
+                    </li>}
+                    {reqsList.memory && <li className="flex items-center mb-[15px]">
                       <p className="uppercase font-bold text-[12px] w-[20%]">
                         memory:
                       </p>
-                      <p className="text-[12px] w-[70%]">4 GB Ram</p>
-                    </li>
-                    <li className="flex items-center mb-[15px]">
+                      <p className="text-[12px] w-[70%]">{reqsList.memory}</p>
+                    </li>}
+                    {reqsList.graphics &&  <li className="flex items-center mb-[15px]">
                       <p className="uppercase font-bold text-[12px] w-[20%]">
                         graphics:
                       </p>
                       <p className="text-[12px] w-[70%]">
-                        NVIDIA 9800 GT 1GB / AMD HD 4870 1GB (DX 10, 10.1, 11)
+                        {reqsList.graphics}
                       </p>
-                    </li>
-                    <li className="flex items-center mb-[15px]">
+                    </li>}
+                    {reqsList.storage && <li className="flex items-center mb-[15px]">
                       <p className="uppercase font-bold text-[12px] w-[20%]">
                         storage:
                       </p>
                       <p className="text-[12px] w-[70%]">
-                        72 GB available space
+                        {reqsList.storage}
                       </p>
-                    </li>
-                    <li className="flex items-center mb-[15px]">
+                    </li>}
+                   {reqsList.soundCard && <li className="flex items-center mb-[15px]">
                       <p className="uppercase font-bold text-[12px] w-[20%]">
                         sound card:
                       </p>
                       <p className="text-[12px] w-[70%]">
-                        100% DirectX 10 compatible
+                        {reqsList.soundCard}
                       </p>
-                    </li>
+                    </li>}
+                    {reqsList.network && <li className="flex items-center mb-[15px]">
+                      <p className="uppercase font-bold text-[12px] w-[20%]">
+                        network:
+                      </p>
+                      <p className="text-[12px] w-[70%]">
+                        {reqsList.network}
+                      </p>
+                    </li>}
+                    
+                    
                   </ul>
                 </div>
-                <div className="recommended mb-[20px]">
-                  <h2 className="uppercase text-yel text-[12px] font-black mb-[15px]">
-                    recommended:
-                  </h2>
-                  <ul className="">
-                    <li className="flex items-center mb-[15px]">
-                      <p className="uppercase font-bold text-[12px] w-[20%]">
-                        OS:
-                      </p>
-                      <p className="text-[12px] w-[70%]">
-                        Windows 10 64 Bit, Windows 8.1 64 Bit, Windows 8 64 Bit,
-                        Win 7 64 Bit Service Pack 1
-                      </p>
-                    </li>
-                    <li className="flex items-center mb-[15px]">
-                      <p className="uppercase font-bold text-[12px] w-[20%]">
-                        processor:
-                      </p>
-                      <p className="text-[12px] w-[70%]">
-                        Intel Core i5 3470 @ 3.2GHz (4 CPUs) / AMD X8 FX-8350 @
-                        4GHz (8 CPUs)
-                      </p>
-                    </li>
-                    <li className="flex items-center mb-[15px]">
-                      <p className="uppercase font-bold text-[12px] w-[20%]">
-                        memory:
-                      </p>
-                      <p className="text-[12px] w-[70%]">8 GB Ram</p>
-                    </li>
-                    <li className="flex items-center mb-[15px]">
-                      <p className="uppercase font-bold text-[12px] w-[20%]">
-                        graphics:
-                      </p>
-                      <p className="text-[12px] w-[70%]">
-                        NVIDIA GTX 660 2GB / AMD HD 7870 2GB
-                      </p>
-                    </li>
-                    <li className="flex items-center mb-[15px]">
-                      <p className="uppercase font-bold text-[12px] w-[20%]">
-                        storage:
-                      </p>
-                      <p className="text-[12px] w-[70%]">
-                        72 GB available space
-                      </p>
-                    </li>
-                    <li className="flex items-center mb-[15px]">
-                      <p className="uppercase font-bold text-[12px] w-[20%]">
-                        sound card:
-                      </p>
-                      <p className="text-[12px] w-[70%]">
-                        100% DirectX 10 compatible
-                      </p>
-                    </li>
-                  </ul>
-                </div>
+               
                 {game.additionalNotes && <div className="additional mb-[30px]">
                   <p className="uppercase font-bold text-[12px] mb-[10px]">
                     additional notes:
@@ -243,7 +205,7 @@ const GameSingle = () => {
                     </h2>
                   </div>
                   <ul className="unstyled">
-                    <PlatformButton name="add to cart" />
+                    <PlatformButton name="add to cart" onClick={handleAddToCart(game.id)} />
                   </ul>
                 </div>
               </div>

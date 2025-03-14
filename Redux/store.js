@@ -1,29 +1,27 @@
-import {createStore,combineReducers, applyMiddleware} from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
-import thunk from "redux-thunk";
+"use client";
+
+import { configureStore } from "@reduxjs/toolkit";
+import { cartSlice } from "./features/Cart/CartSlice";
 
 
-const reducer=combineReducers({
+const getCartItemsFromLocalStorage = () => {
+    if (typeof window !== "undefined") {
+      const cartItems = localStorage.getItem("cartItems");
+      return cartItems ? JSON.parse(cartItems) : [];
+    }
+    return [];
+  };
+
+  const initialState = {
+    cart: { cartItems: getCartItemsFromLocalStorage() },
     
-    registerUser:userRegisterReducer,
-   
+  }; 
+
+export const store = configureStore({
+    reducer: {
+        cart: cartSlice
+    },
+    preloadedState: initialState,
 })
-
-const userInfoFromLS=localStorage.getItem("userInfo") ?
- JSON.parse(localStorage.getItem("userInfo"))
- :null
-
-
-const initialState={
-    
-}
-const middleware = [thunk];
-
-
-const store=createStore(
-    reducer,
-    initialState,
-    composeWithDevTools(applyMiddleware(...middleware))
-)
 
 export default store;
