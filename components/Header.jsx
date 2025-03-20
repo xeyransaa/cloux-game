@@ -1,7 +1,8 @@
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   FaBars,
+  FaCartShopping,
   FaFacebookF,
   FaGooglePlusG,
   FaInstagram,
@@ -16,6 +17,8 @@ import SignUp from "./SignUp";
 import { BASE_URL } from "@/api/BaseConfig";
 import Account from "./Account";
 import { usePathname } from "next/navigation";
+import Cart from "./Cart";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [links, setLinks] = useState([]);
@@ -28,11 +31,15 @@ const Header = () => {
   const [showHeader, setShowHeader] = useState(true);
   const [showAccount, setShowAccount] = useState(false);
   const [showProfilePic, setShowProfilePic] = useState(false);
+  const [showCart, setShowCart] = useState(false)
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
     setShowHeader(!showHeader);
   };
+  const closeCart = () => {
+    setShowCart(false)
+  } 
 
   const getLinks = () => {
     fetch(BASE_URL + "SocialMedia")
@@ -40,9 +47,27 @@ const Header = () => {
       .then((c) => setLinks(c));
   };
 
+const ref = useRef(null);
+    const handleClickOutside = (event) => {
+        if (ref.current && !event.composedPath().includes(ref.current)) {
+          setShowCart(false);
+        }
+      };
+
+    useEffect(() => {
+        if (!showCart) return;
+        document.addEventListener("click", handleClickOutside);
+        return () => {
+          document.removeEventListener("click", handleClickOutside);
+        };
+      }, [showCart]);
+
   useEffect(() => {
     getLinks();
   }, []);
+
+  const cartItems = useSelector((state) => state.cart.cartItems)
+  const totalQuantity = cartItems.reduce((sum, i) => sum + i.quantity, 0)
 
   return (
     <>
@@ -122,6 +147,17 @@ const Header = () => {
                       logOut={() => setShowProfilePic(false)}
                     />
                   )}
+                  <div className="cart ml-[20px] relative">
+                    <button className="flex items-center" onClick={() => setShowCart(!showCart)}>
+                    <FaCartShopping className="text-yel text-[24px]"/>
+
+                    </button>
+                    {showCart && <Cart closeCart={closeCart} ref={ref}/>}
+                 <span className="count-of-items absolute bottom-[60%] left-[70%] bg-white text-[10px] w-[16px]  rounded-[10px] text-center">
+                  {totalQuantity}
+                 </span>
+
+                  </div>
                 </div>
                 <div className="bottom-header flex justify-end items-center">
                   <ul className="flex list-unstyled">

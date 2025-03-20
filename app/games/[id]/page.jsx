@@ -10,7 +10,7 @@ import PlatformButton from "@/components/PlatformButton";
 
 import SignUp from "@/components/SignUp";
 import SocialMedia from "@/components/SocialMedia";
-import { addToCart } from "@/Redux/features/Cart/CartSlice";
+import { addToCart, decreaseQuantity, increaseQuantity } from "@/Redux/features/Cart/CartSlice";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -68,24 +68,11 @@ const GameSingle = () => {
    
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.cartItems);
-  const handleAddToCart = (id) => {
-      const findItem = cartItems.length > 0 ? cartItems.find(ct=>ct.id===id) : null;
-      const quantity = findItem ? findItem.quantity + 1 : 1;
-      dispatch(addToCart({id, quantity}))
+  const handleAddToCart = (id, price) => {
+      dispatch(addToCart({id, price}))
       
   };
       
-  
-
-  // const handleAddToCart = (id) => {
-  //   if (!id) {
-  //     console.error("handleAddToCart: Received undefined ID");
-  //     return;
-  //   }
-  //   const findItem = cartItems.length > 0 ? cartItems.find(ct=>ct.id===id) : null;
-  //   const quantity = findItem ? findItem.quantity + 1 : 1;
-  //   dispatch(addToCart({id, quantity}))
-  // }
   return (
     <>
       <Header />
@@ -213,11 +200,13 @@ const GameSingle = () => {
                       </span>
                     </h2>
                   </div>
-                  <div onClick={() => handleAddToCart(game.id)}>
+                  <div onClick={() => handleAddToCart(game.id, game.discountedPrice)}>
                     <PlatformButton name="add to cart"/>
-                    <div>{game.name}</div><span>{cartItems.quantity}</span>
+                    <div>{game.name}</div><span>{cartItems?.find((item) => item.id === game.id)?.quantity || 0}</span>
 
                   </div>
+                  <button onClick={() => dispatch(increaseQuantity(game.id))}>+</button><br />
+<button onClick={()=> dispatch(decreaseQuantity(game.id))}>-</button>
                 </div>
               </div>
             </div>
