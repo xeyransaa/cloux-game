@@ -72,6 +72,7 @@ const GameSingle = () => {
       dispatch(addToCart({id, price}))
       
   };
+  const [buttonName, setButtonName] = useState('add to cart');
       
   return (
     <>
@@ -195,18 +196,24 @@ const GameSingle = () => {
                   <div className="price">
                     <h2 className="uppercase text-[18px] font-bold">
                       Price:{" "}
-                      <span className="text-yel font-black">
-                        ${game.originalPrice}
-                      </span>
+                   
+                        {game.discountedPrice !== game.originalPrice ? (
+                        <>
+                        <span className="text-black font-black mr-[10px] line-through">
+                          ${game.originalPrice}
+                        </span><span className="text-yel font-black">
+                        ${game.discountedPrice}
+                        </span>
+                        </>
+                        ): <span className="text-yel font-black">${game.originalPrice}</span>}
+                      
                     </h2>
                   </div>
-                  <div onClick={() => handleAddToCart(game.id, game.discountedPrice)}>
-                    <PlatformButton name="add to cart"/>
-                    <div>{game.name}</div><span>{cartItems?.find((item) => item.id === game.id)?.quantity || 0}</span>
-
+                  <div onClick={() => {handleAddToCart(game.id, game.discountedPrice); setButtonName('In cart')}}>
+                    <PlatformButton name={buttonName} link = {buttonName==='In cart' && '/cart'}/>
+                  
                   </div>
-                  <button onClick={() => dispatch(increaseQuantity(game.id))}>+</button><br />
-<button onClick={()=> dispatch(decreaseQuantity(game.id))}>-</button>
+                  
                 </div>
               </div>
             </div>

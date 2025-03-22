@@ -16,7 +16,7 @@ const PlatformButton = ({
         href={link}
         onClick={onClick}
         className={`hover:cursor-pointer mx-[10px] uppercase  flex items-center justify-center px-[20px] py-[15px] border-yel border-[2px] border-solid text-[13px] font-bold hover:bg-yel hover:text-white transition-all duration-300 ${
-          isActive ? "bg-yel text-white" : "bg-white text-yel"
+          isActive || name === 'In cart' ? "bg-yel text-white" : "bg-white text-yel"
         }`}
         style={{
           boxSizing: "border-box",
