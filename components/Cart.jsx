@@ -2,12 +2,14 @@ import React, { forwardRef, useEffect, useRef } from 'react'
 import CartItem from './CartItem'
 import { useDispatch, useSelector } from 'react-redux'
 import { FaXmark } from 'react-icons/fa6';
+import { clearCart } from '@/Redux/features/Cart/CartSlice';
 
 
 const Cart = forwardRef(({ closeCart }, ref) => {
     const cartItems = useSelector((state) => state.cart.cartItems)
     const totalQuantity = cartItems.reduce((sum, i) => sum + i.quantity, 0)
     const totalPrice = cartItems.reduce((sum, i) => sum + i.quantity*i.price, 0)
+    const dispatch = useDispatch()
     
   return (
     <div
@@ -23,9 +25,16 @@ const Cart = forwardRef(({ closeCart }, ref) => {
                              <a
                      href='/cart'
                       
-                      className="text-white bg-yel font-semibold hover:bg-black hover:border-black transition-all duration-200 py-[10px] px-[20px] outline-none text-[14px]"
+                      className="text-white mr-[15px] bg-yel font-semibold hover:bg-black hover:border-black transition-all duration-200 py-[10px] px-[20px] outline-none text-[14px]"
                     >
                       Go to your cart
+                    </a>
+                    <a
+                     onClick={()=> dispatch(clearCart())}
+                      
+                      className="text-white cursor-pointer bg-yel font-semibold hover:bg-black hover:border-black transition-all duration-200 py-[10px] px-[20px] outline-none text-[14px]"
+                    >
+                      Clear the cart
                     </a>
                             </div>
                            )   : 

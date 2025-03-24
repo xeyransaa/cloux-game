@@ -8,7 +8,7 @@ const GameDetail = (props) => {
       <div className="image relative w-full mb-[20px] shadow-[0_0_3rem_rgba(0,0,0,0.23)]">
         <a href={`/games/${props.id}`} className="">
           <Image
-            src={`/img/${props.smallPhotoUrl}`}
+            src={`/img/${props.posterUrl}`}
             alt="game-image"
             width={0}
             height={0}
@@ -57,7 +57,7 @@ const GameDetail = (props) => {
         ))}
       </div>
       <div className="short-desc text-[14px] text-[#777]">
-        <p className="h-[40px] overflow-hidden">{props.description}</p>
+        <p className="h-[40px] overflow-hidden">{props.shortDescription}</p>
       </div>
     </div>
   );

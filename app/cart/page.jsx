@@ -1,5 +1,5 @@
 'use client'
-import CartItem from '@/components/CartItem';
+import CartIteminPage from '@/components/CartIteminPage';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import Heading from '@/components/Heading';
@@ -7,9 +7,11 @@ import Login from '@/components/Login';
 import Newsletter from '@/components/Newsletter';
 import SignUp from '@/components/SignUp';
 import SocialMedia from '@/components/SocialMedia';
-import React, { useState } from 'react'
+import { clearCart } from '@/Redux/features/Cart/CartSlice';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useRef, useState } from 'react'
 import { FaCartShopping } from 'react-icons/fa6';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const CartPage = () => {
      const [showLogin, setShowLogin] = useState(false);
@@ -17,6 +19,25 @@ const CartPage = () => {
       const cartItems = useSelector((state) => state.cart.cartItems)
     const totalQuantity = cartItems.reduce((sum, i) => sum + i.quantity, 0)
     const totalPrice = cartItems.reduce((sum, i) => sum + i.quantity*i.price, 0)
+    const dispatch = useDispatch()
+    const [showModal, setShowModal] = useState(false)
+    const ref = useRef()
+    const handleClickOutside = (event) => {
+            if (ref.current && !event.composedPath().includes(ref.current)) {
+              setShowModal(false);
+            }
+          };
+    
+        useEffect(() => {
+            if (!showModal) return;
+            document.addEventListener("click", handleClickOutside);
+            return () => {
+              document.removeEventListener("click", handleClickOutside);
+            };
+          }, [showModal]);
+const router = useRouter()
+        
+      
   return (
 <>
       <Header />
@@ -30,16 +51,32 @@ const CartPage = () => {
                {cartItems.length > 0 ? 
                (
                    <div className=''>
-                    <h2 className='mb-[10px]'><span className='font-black text-yel'>{totalQuantity}</span> {totalQuantity > 1 ? "products" : "product"} in your cart</h2>
-                    {cartItems.map((i) => <CartItem key={i.id} gameId={i.id}/>)}
-                    <h2 className='font-bold mb-[20px]'>Total price: ${totalPrice}</h2>
-                    <a
-            href='#'
-             
-             className="text-white bg-yel font-semibold hover:bg-black hover:border-black transition-all duration-200 py-[10px] px-[20px] outline-none text-[14px]"
+                    <ul className='cart-items mb-[45px]'>
+                    {cartItems.map((i) => 
+                      <li className='cart-item border-t-[2px] border-[rgba(0,0,0,0,8)] last:border-b-[2px] pt-[15px] '>
+                      <CartIteminPage key={i.id} gameId={i.id}/>
+                      </li>
+                      )}
+                    </ul>
+                    
+                    <h2 className='font-bold text-[30px] mb-[20px]'>Total price: ${totalPrice}</h2>
+                    <button
+            
+             onClick={()=> router.push('/checkout')}
+             className="text-white mr-[20px] bg-yel font-semibold hover:bg-black hover:border-black transition-all duration-200 py-[10px] px-[20px] outline-none text-[18px]"
            >
              Check out
-           </a>
+           </button>
+           <button
+           
+            onClick={()=>   {console.log("Opening modal");
+              setShowModal(true)}}
+             className="text-white bg-yel font-semibold hover:bg-black hover:border-black transition-all duration-200 py-[10px] px-[20px] outline-none text-[18px]"
+           >
+            {console.log("showModal is", showModal)}
+
+             Clear the cart
+           </button>
                    </div>
                   )   : 
                 (
@@ -51,7 +88,42 @@ const CartPage = () => {
              
            
            </div>
+{showModal && (
+                <div
+                  ref={ref}
+                  className="fixed z-50 px-[50px] flex justify-center items-center bg-white rounded-xl shadow-[0_0_3rem_rgba(0,0,0,0.23)] w-[300px] h-[200px] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
+                >
+                  <div className="flex flex-col items-center text-center">
+                    
+                    
+                    <p className="mb-[20px] font-semibold">
+                      Are you sure you want to clear the cart?
+                    </p>
+                    <div className='flex gap-[10px]'>
+                    <button
+                      onClick={() => {
+                        dispatch(clearCart())
+                        setShowModal(false)
+                      }}
+                      className="text-white bg-yel font-semibold hover:bg-black hover:border-black transition-all duration-200 relative h-[50px] px-[20px] border-white border-[2px] border-solid bg-white outline-none text-[14px]"
+                    >
+                      Confirm
+                      
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowModal(false);
+                      }}
+                      className="text-white bg-yel font-semibold hover:bg-black hover:border-black transition-all duration-200 relative h-[50px] px-[20px] border-white border-[2px] border-solid bg-white outline-none text-[14px]"
+                    >
+                      Cancel
+                    </button>
 
+                    </div>
+                    
+                  </div>
+                </div>
+              )}
         </div>
         
       </section>

@@ -29,6 +29,7 @@ import Header from "@/components/Header";
 import SocialMedia from "@/components/SocialMedia";
 import Newsletter from "@/components/Newsletter";
 import useOverflow from "@/constants/Overflow";
+import GameDetailSkeleton from "@/components/GameDetailSkeleton";
 
 const Home = () => {
   const settings = {
@@ -104,7 +105,7 @@ const Home = () => {
   const [platformGameList, setPlatformGameList] = useState(games);
   const [platformName, setPlatformName] = useState("");
   const handleButtonClick = (name, gameList) => {
-    // Set the clicked button as active
+
 
     if (name === "More") {
       setIsMoreActive(!isMoreActive);
@@ -154,7 +155,6 @@ const Home = () => {
 
   return (
     <>
-    
       <Header
         onClickLogin={() => setShowLogin(true)}
         onClickSignup={() => setShowSignUp(true)}
@@ -169,7 +169,7 @@ const Home = () => {
               <div
                 className={`top-game top-game-1 flex justify-center items-center h-screen min-h-[600px]`}
                 style={{
-                  backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/img/${c.mainPhotoUrl}')`,
+                  backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/img/${c.largePhotoUrl}')`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   backgroundRepeat: "no-repeat",
@@ -183,7 +183,7 @@ const Home = () => {
                         {c.platformNames?.map((platformName, index) => (
                           <React.Fragment key={platformName}>
                             <a
-                              className="text-white transition duration-200 ease-in hover:text-yel"
+                              className="text-white transition duration-200 ease-in hover:text-yel uppercase"
                               href={`/games/platform/${platformName}`}
                             >
                               {platformName}
@@ -199,7 +199,7 @@ const Home = () => {
                         {c.categoryNames?.map((categoryName, index) => (
                           <React.Fragment key={categoryName}>
                             <a
-                              className="text-white transition duration-200 ease-in hover:text-yel"
+                              className="text-white transition duration-200 ease-in hover:text-yel uppercase"
                               href={`/games/category/${categoryName}`}
                             >
                               {categoryName}
@@ -211,11 +211,11 @@ const Home = () => {
                         ))}
                       </div>
                     </div>
-                    <h1 className="title text-white lg:text-[66px] text-[36px] font-black mb-[30px]">
+                    <h1 className="title uppercase text-white lg:text-[66px] text-[36px] font-black mb-[30px]">
                       {c.name}
                     </h1>
-                    <p className="description text-white text-[16px] mb-[60px]">
-                      {c.description}
+                    <p className="description max-h-[70px] overflow-hidden text-white text-[16px] mb-[60px]">
+                      {c.shortDescription}
                     </p>
                     <div className="game-btns">
                       <a
@@ -237,7 +237,11 @@ const Home = () => {
             </div>
           ))}
       </Slider>
-
+{
+  Array.from({length: 6}).map((i) =>
+    <GameDetailSkeleton/>
+  )
+}
       <section className="about py-20">
         <div className="grid lg:grid-cols-3 grid-cols-1 gap-10 w-full min-[992px]:max-w-[1140px] max-w-full mx-auto px-[1.154rem] md:px-[2.308rem] min-[1200px]:px-[15px]">
           <div className="shadow-[0_0_3rem_rgba(0,0,0,0.23)] bg-[url('/img/box-1-bg.jpg')] bg-cover bg-center bg-no-repeat p-10 relative before:bg-black before:opacity-50 before:absolute before:top-0 before:left-0 before:w-full before:h-full ">

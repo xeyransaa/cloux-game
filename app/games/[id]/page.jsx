@@ -10,18 +10,28 @@ import PlatformButton from "@/components/PlatformButton";
 
 import SignUp from "@/components/SignUp";
 import SocialMedia from "@/components/SocialMedia";
-import { addToCart, decreaseQuantity, increaseQuantity } from "@/Redux/features/Cart/CartSlice";
+import {
+  addToCart,
+  clearCart,
+  decreaseQuantity,
+  increaseQuantity,
+  removeFromCart,
+} from "@/Redux/features/Cart/CartSlice";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import {
   FaCheck,
   FaFacebookF,
   FaGears,
   FaGooglePlusG,
+  FaMinus,
+  FaPlus,
   FaRegClock,
   FaShareNodes,
   FaTags,
+
+  FaTrashCan,
   FaTv,
   FaTwitch,
   FaTwitter,
@@ -31,15 +41,28 @@ import { useDispatch, useSelector } from "react-redux";
 
 const GameSingle = () => {
   const { id } = useParams();
+  
   const [game, setGame] = useState([]);
+  const router = useRouter()
   const getGame = (id) => {
-    fetch(BASE_URL + `Game/${id}`)
+    
+      fetch(BASE_URL + `Game/${id}`)
       .then((c) => c.json())
       .then((r) => setGame(r.data));
+      
+    
+    
   };
+
   useEffect(() => {
+    
     getGame(id);
-  }, [id]);
+    if (game === null) {
+      router.push("/games");
+    }
+    
+  }, [id, game]);
+ 
   const [reqsList, setReqsList] = useState([]);
   const [activeOS, setActiveOS] = useState("Windows");
   const [showLogin, setShowLogin] = useState(false);
@@ -48,43 +71,44 @@ const GameSingle = () => {
     setReqsList(reqsList);
     setActiveOS(name);
   };
-  const uniqueLanguages = game.languages
-    ? game.languages.filter(
-        (lang, index, self) =>
-          index ===
-          self.findIndex(
-            (l) =>
-              l.name === lang.name &&
-              JSON.stringify(l.gameLanguageTypes) === JSON.stringify(lang.gameLanguageTypes)
-          )
-      )
-    : [];
+  
 
-    useEffect(() => {
-      if (game.minimumReqs && game.minimumReqs.length > 0) {
-        setReqsList(game.minimumReqs[0].systemRequirements);
-      }
-    }, [game]);
-   
+  useEffect(() => {
+    if (game?.minimumReqs && game?.minimumReqs.length > 0) {
+      setReqsList(game?.minimumReqs[0].systemRequirements);
+    }
+  }, [game]);
+
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.cartItems);
   const handleAddToCart = (id, price) => {
-      dispatch(addToCart({id, price}))
-      
+    dispatch(addToCart({ id, price }));
   };
-  const [buttonName, setButtonName] = useState('add to cart');
-      
+  
+ 
+    const gameInCart = game?.id ? cartItems.find((g) => g.id == game.id) : null
+    const buttonName = gameInCart ? `In cart (${gameInCart.quantity})` : 'Add to cart';
+
+  
+
+ 
+
+
+  
+  
+  
+  
   return (
     <>
       <Header />
-      <Heading name={game.name} />
+      <Heading name={game?.name} />
       <section className="main">
         <div className="single-game min-[1200px]:max-w-[1140px] max-w-full mx-auto px-[1.154rem] md:px-[2.308rem] min-[1200px]:px-[15px] py-[80px]">
           <div className="grid lg:grid-cols-[65%_32%] grid-cols-1 lg:gap-[3%]">
             <div className="left-side">
               <div className="game-image mb-[30px]">
                 <Image
-                  src={`/img/${game.mainPhotoUrl}`}
+                  src={`/img/${game?.largePhotoUrl}`}
                   sizes="100vh"
                   width={0}
                   height={0}
@@ -94,12 +118,9 @@ const GameSingle = () => {
               </div>
               <div className="about-game md:mb-[30px] mb-[50px] md:p-[30px] md:pr-[45px] pr-[10px] md:shadow-[0_0_3rem_rgba(0,0,0,0.23)]">
                 <h1 className="text-[24px] font-black uppercase mb-[20px]">
-                  About <span className="text-yel">{game.name}</span>
+                  About <span className="text-yel">{game?.name}</span>
                 </h1>
-                <p className="text-[14px] mb-[20px]">
-                  {game.description}
-                </p>
-                
+                <p className="text-[14px] mb-[20px]">{game?.longDescription}</p>
               </div>
               <div
                 className="details md:p-[30px] md:pr-[45px] pr-[10px] md:shadow-[0_0_3rem_rgba(0,0,0,0.23)] md:mb-[30px] mb-[50px]"
@@ -109,111 +130,157 @@ const GameSingle = () => {
                   Minimum <span className="text-yel">system requirements</span>
                 </h1>
                 <ul className="unstyled flex my-[40px]">
-                  {game.minimumReqs?.map(reqs => (
-                    <li>
-                    <PlatformButton
-                      name={reqs.osName}
-                      isActive={activeOS === reqs.osName}
-                      onClick={() => handleButtonClick(reqs.osName, reqs.systemRequirements)}
-                    />
-                  </li>
-                    
-                  )
-
-                  )}
+                  {game?.minimumReqs?.map((reqs) => (
+                    <li key={reqs.osName}>
+                      <PlatformButton
+                        name={reqs.osName}
+                        isActive={activeOS === reqs.osName}
+                        onClick={() =>
+                          handleButtonClick(
+                            reqs.osName,
+                            reqs.systemRequirements
+                          )
+                        }
+                      />
+                    </li>
+                  ))}
                 </ul>
                 <div className="minimum mb-[30px]">
-                  
                   <ul className="">
-                  {reqsList.os && <li className="flex items-center mb-[15px]">
-                      
-                      <p className="uppercase font-bold text-[12px] w-[20%]">
-                        OS:
-                      </p>
-                      <p className="text-[12px] w-[70%]">
-                        {reqsList.os}
-                      </p>
-                    </li>}
-                    {reqsList.processor && <li className="flex items-center mb-[15px]">
-                      <p className="uppercase font-bold text-[12px] w-[20%]">
-                        processor:
-                      </p>
-                      <p className="text-[12px] w-[70%]">
-                        {reqsList.processor}
-                      </p>
-                    </li>}
-                    {reqsList.memory && <li className="flex items-center mb-[15px]">
-                      <p className="uppercase font-bold text-[12px] w-[20%]">
-                        memory:
-                      </p>
-                      <p className="text-[12px] w-[70%]">{reqsList.memory}</p>
-                    </li>}
-                    {reqsList.graphics &&  <li className="flex items-center mb-[15px]">
-                      <p className="uppercase font-bold text-[12px] w-[20%]">
-                        graphics:
-                      </p>
-                      <p className="text-[12px] w-[70%]">
-                        {reqsList.graphics}
-                      </p>
-                    </li>}
-                    {reqsList.storage && <li className="flex items-center mb-[15px]">
-                      <p className="uppercase font-bold text-[12px] w-[20%]">
-                        storage:
-                      </p>
-                      <p className="text-[12px] w-[70%]">
-                        {reqsList.storage}
-                      </p>
-                    </li>}
-                   {reqsList.soundCard && <li className="flex items-center mb-[15px]">
-                      <p className="uppercase font-bold text-[12px] w-[20%]">
-                        sound card:
-                      </p>
-                      <p className="text-[12px] w-[70%]">
-                        {reqsList.soundCard}
-                      </p>
-                    </li>}
-                    {reqsList.network && <li className="flex items-center mb-[15px]">
-                      <p className="uppercase font-bold text-[12px] w-[20%]">
-                        network:
-                      </p>
-                      <p className="text-[12px] w-[70%]">
-                        {reqsList.network}
-                      </p>
-                    </li>}
-                    
-                    
+                    {reqsList.os && (
+                      <li className="flex items-center mb-[15px]">
+                        <p className="uppercase font-bold text-[12px] w-[20%]">
+                          OS:
+                        </p>
+                        <p className="text-[12px] w-[70%]">{reqsList.os}</p>
+                      </li>
+                    )}
+                    {reqsList.processor && (
+                      <li className="flex items-center mb-[15px]">
+                        <p className="uppercase font-bold text-[12px] w-[20%]">
+                          processor:
+                        </p>
+                        <p className="text-[12px] w-[70%]">
+                          {reqsList.processor}
+                        </p>
+                      </li>
+                    )}
+                    {reqsList.memory && (
+                      <li className="flex items-center mb-[15px]">
+                        <p className="uppercase font-bold text-[12px] w-[20%]">
+                          memory:
+                        </p>
+                        <p className="text-[12px] w-[70%]">{reqsList.memory}</p>
+                      </li>
+                    )}
+                    {reqsList.graphics && (
+                      <li className="flex items-center mb-[15px]">
+                        <p className="uppercase font-bold text-[12px] w-[20%]">
+                          graphics:
+                        </p>
+                        <p className="text-[12px] w-[70%]">
+                          {reqsList.graphics}
+                        </p>
+                      </li>
+                    )}
+                    {reqsList.storage && (
+                      <li className="flex items-center mb-[15px]">
+                        <p className="uppercase font-bold text-[12px] w-[20%]">
+                          storage:
+                        </p>
+                        <p className="text-[12px] w-[70%]">
+                          {reqsList.storage}
+                        </p>
+                      </li>
+                    )}
+                    {reqsList.soundCard && (
+                      <li className="flex items-center mb-[15px]">
+                        <p className="uppercase font-bold text-[12px] w-[20%]">
+                          sound card:
+                        </p>
+                        <p className="text-[12px] w-[70%]">
+                          {reqsList.soundCard}
+                        </p>
+                      </li>
+                    )}
+                    {reqsList.network && (
+                      <li className="flex items-center mb-[15px]">
+                        <p className="uppercase font-bold text-[12px] w-[20%]">
+                          network:
+                        </p>
+                        <p className="text-[12px] w-[70%]">
+                          {reqsList.network}
+                        </p>
+                      </li>
+                    )}
                   </ul>
                 </div>
-               
-                {game.additionalNotes && <div className="additional mb-[30px]">
-                  <p className="uppercase font-bold text-[12px] mb-[10px]">
-                    additional notes:
-                  </p>
-                  <p className="text-[12px]">{game.additionalNotes}</p>
-                </div>}
-                
+
+                {game?.additionalNotes && (
+                  <div className="additional mb-[30px]">
+                    <p className="uppercase font-bold text-[12px] mb-[10px]">
+                      additional notes:
+                    </p>
+                    <p className="text-[12px]">{game?.additionalNotes}</p>
+                  </div>
+                )}
+
                 <div className="buy flex items-center justify-between">
                   <div className="price">
                     <h2 className="uppercase text-[18px] font-bold">
                       Price:{" "}
-                   
-                        {game.discountedPrice !== game.originalPrice ? (
+                      {game?.discountedPrice !== game?.originalPrice ? (
                         <>
-                        <span className="text-black font-black mr-[10px] line-through">
-                          ${game.originalPrice}
-                        </span><span className="text-yel font-black">
-                        ${game.discountedPrice}
-                        </span>
+                          <span className="text-black font-black mr-[10px] line-through">
+                            ${game?.originalPrice}
+                          </span>
+                          <span className="text-yel font-black">
+                            ${game?.discountedPrice}
+                          </span>
                         </>
-                        ): <span className="text-yel font-black">${game.originalPrice}</span>}
-                      
+                      ) : (
+                        <span className="text-yel font-black">
+                          ${game?.originalPrice}
+                        </span>
+                      )}
                     </h2>
                   </div>
-                  <div onClick={() => {handleAddToCart(game.id, game.discountedPrice); setButtonName('In cart')}}>
-                    <PlatformButton name={buttonName} link = {buttonName==='In cart' && '/cart'}/>
-                  
+                  <div
+                  className="flex items-center"
+                    onClick={() => {
+                      buttonName === 'Add to cart' && handleAddToCart(game?.id, game?.discountedPrice);
+
+                     
+                    }}
+                  >
+                    {
+                      gameInCart ? (
+                        <>
+                        
+                      {gameInCart.quantity == 1 ? 
+                      (<button className="hover:text-yel duration-300 transition" onClick={()=> dispatch(removeFromCart(game?.id))}>
+                        <FaTrashCan/> 
+                      </button>)
+                      : (<button className="hover:text-yel duration-300 transition" onClick={()=> dispatch(decreaseQuantity(game?.id))}>
+                      <FaMinus/> 
+                    </button>)}
+                      
+                    
+                    <PlatformButton
+                      name={buttonName} 
+                    
+                    />
+                    <button className="hover:text-yel duration-300 transition" onClick={()=> dispatch(increaseQuantity(game.id))}>
+                      <FaPlus/>
+                    </button>
+                        </>
+                      ) : (<PlatformButton
+                        name={buttonName}
+                      
+                      />)
+                    }
+                    
                   </div>
-                  
                 </div>
               </div>
             </div>
@@ -230,10 +297,10 @@ const GameSingle = () => {
                         Genre:
                       </p>
                       <div className="text-[12px] w-[50%]">
-                        {game.categoryNames?.map((categoryName, index) => (
+                        {game?.categoryNames?.map((categoryName, index) => (
                           <React.Fragment key={categoryName}>
                             <a href="">{categoryName}</a>
-                            {index < game.categoryNames.length - 1 && (
+                            {index < game?.categoryNames.length - 1 && (
                               <span className="mr-[5px]">,</span>
                             )}
                           </React.Fragment>
@@ -246,7 +313,7 @@ const GameSingle = () => {
                         Release date:
                       </p>
                       <div className="text-[12px] w-[50%]">
-                        {`${game.releaseMonth} ${game.releaseDay}, ${game.releaseYear}`}
+                        {`${game?.releaseMonth} ${game?.releaseDay}, ${game?.releaseYear}`}
                       </div>
                     </li>
                     <li className="flex items-center mb-[15px]">
@@ -266,10 +333,10 @@ const GameSingle = () => {
                         Platforms:
                       </p>
                       <div className="text-[12px] w-[50%]">
-                        {game.platformNames?.map((platformName, index) => (
+                        {game?.platformNames?.map((platformName, index) => (
                           <React.Fragment key={platformName}>
                             <a href="">{platformName}</a>
-                            {index < game.platformNames.length - 1 && (
+                            {index < game?.platformNames.length - 1 && (
                               <span className="mr-[5px]">,</span>
                             )}
                           </React.Fragment>
@@ -285,35 +352,35 @@ const GameSingle = () => {
                       <div className="flex items-center w-[50%]">
                         <a
                           className="mr-[10px] hover:text-yel transition duration-200 ease-in"
-                          href={game.facebookLink}
+                          href={game?.facebookLink}
                           target="_blank"
                         >
                           <FaFacebookF />
                         </a>
                         <a
                           className="mr-[10px] hover:text-yel transition duration-200 ease-in"
-                          href={game.twitterLink}
+                          href={game?.twitterLink}
                           target="_blank"
                         >
                           <FaTwitter />
                         </a>
                         <a
                           className="mr-[10px] hover:text-yel transition duration-200 ease-in"
-                          href={game.googlePlusLink}
+                          href={game?.googlePlusLink}
                           target="_blank"
                         >
                           <FaGooglePlusG />
                         </a>
                         <a
                           className="mr-[10px] hover:text-yel transition duration-200 ease-in"
-                          href={game.youtubeLink}
+                          href={game?.youtubeLink}
                           target="_blank"
                         >
                           <FaYoutube />
                         </a>
                         <a
                           className="mr-[10px] hover:text-yel transition duration-200 ease-in"
-                          href={game.twitchLink}
+                          href={game?.twitchLink}
                           target="_blank"
                         >
                           <FaTwitch />
@@ -341,36 +408,27 @@ const GameSingle = () => {
                         Subtitles
                       </p>
                     </li>
-                    {uniqueLanguages?.map(l => (
-                      <li className="flex items-center justify-between  border-b-[1px] py-[10px]">
-                      <a href="" className="text-[12px] w-[28%]">
-                        {l.name}
-                      </a>
-                     <span className="text-yel w-[27%] flex justify-center" >
-                     {
-                          l.gameLanguageTypes.includes('Interface') && <FaCheck />}
-                     </span>
-                     <span className="text-yel w-[16%] flex justify-center">
-                     {l.gameLanguageTypes.includes('Audio') && <FaCheck  />}
-
-                     </span>
-                      
-                        <span className="text-yel w-[26%] flex justify-center" >
-                        {l.gameLanguageTypes.includes('Subtitle') && <FaCheck />
-
-}
+                    {game?.languages?.map((l) => (
+                      <li className="flex items-center justify-between  border-b-[1px] py-[10px]" key={l.name}>
+                        <a href="" className="text-[12px] w-[28%]">
+                          {l.name}
+                        </a>
+                        <span className="text-yel w-[27%] flex justify-center">
+                          {l.gameLanguageTypes.includes("Interface") && (
+                            <FaCheck />
+                          )}
                         </span>
-                         
-                         
-                        
+                        <span className="text-yel w-[16%] flex justify-center">
+                          {l.gameLanguageTypes.includes("Audio") && <FaCheck />}
+                        </span>
 
-                      
-
-                    </li>
-
+                        <span className="text-yel w-[26%] flex justify-center">
+                          {l.gameLanguageTypes.includes("Subtitle") && (
+                            <FaCheck />
+                          )}
+                        </span>
+                      </li>
                     ))}
-                    
-                    
                   </ul>
                 </div>
               </div>
