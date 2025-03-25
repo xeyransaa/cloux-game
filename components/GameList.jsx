@@ -13,7 +13,7 @@ import {
   FaAnglesLeft,
   FaAnglesRight,
 } from "react-icons/fa6";
-import GameDetailSkeleton from "./GameDetailSkeleton";
+import GameDetailSkeleton from "./Skeletons/GameDetailSkeleton";
 
 const GamesList = () => {
   const searchParams = useSearchParams();
@@ -40,7 +40,10 @@ const GamesList = () => {
   const getGames = () => {
     fetch(BASE_URL + "Game")
       .then((c) => c.json())
-      .then((c) => {setGames(c); setLoading(false)});
+      .then((c) => {
+        setGames(c);
+        setLoading(false);
+      });
   };
   useEffect(() => {
     getGames();
@@ -61,12 +64,9 @@ const GamesList = () => {
     <section className="main">
       <div className="games min-[1200px]:max-w-[1140px] max-w-full mx-auto px-[1.154rem] md:px-[2.308rem] min-[1200px]:px-[15px] py-[80px]">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-          {loading ? Array.from({length: 6}).map((i) =>
-            <GameDetailSkeleton/>
-          ): (displayedGames.map((g) => (
-            <GameDetail key={g.id} {...g}/>
-          )))}
-          
+          {loading
+            ? Array.from({ length: 6 }).map((i) => <GameDetailSkeleton />)
+            : displayedGames.map((g) => <GameDetail key={g.id} {...g} />)}
         </div>
         {games.length > gamesPerPage && (
           <ul className="unstyled flex flex-row flex-wrap items-center justify-center mt-[50px] gap-y-[20px] px-2">

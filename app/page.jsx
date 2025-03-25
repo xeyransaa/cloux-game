@@ -29,7 +29,9 @@ import Header from "@/components/Header";
 import SocialMedia from "@/components/SocialMedia";
 import Newsletter from "@/components/Newsletter";
 import useOverflow from "@/constants/Overflow";
-import GameDetailSkeleton from "@/components/GameDetailSkeleton";
+import GameDetailSkeleton from "@/components/Skeletons/GameDetailSkeleton";
+import SliderSkeleton from "@/components/Skeletons/SliderSkeleton";
+import PlatformNameSkeleton from "@/components/Skeletons/PlatformNameSkeleton";
 
 const Home = () => {
   const settings = {
@@ -51,7 +53,10 @@ const Home = () => {
   const getGames = () => {
     fetch(BASE_URL + "Game")
       .then((c) => c.json())
-      .then((c) => setGames(c));
+      .then((c) => {
+        setGames(c);
+        setIsGamesLoading(false)
+  });
   };
   const [featured, setFeatured] = useState([]);
   const [platforms, setPlatforms] = useState([]);
@@ -60,16 +65,29 @@ const Home = () => {
   const [visiblePlatforms, setVisiblePlatforms] = useState([]);
   const [morePlatforms, setMorePlatforms] = useState([]);
   const copyOfPlatforms = [...platforms];
+  const [isGamesLoading, setIsGamesLoading] = useState(true);
+  const [isLinksLoading, setIsLinksLoading] = useState(true);
+  const [isLanguagesLoading, setIsLanguagesLoading] = useState(true);
+  const [isCategoriesLoading, setIsCategoriesLoading] = useState(true);
+  const [isPlatformsLoading, setIsPlatformsLoading] = useState(true);
+  const [isFeaturedLoading, setIsFeaturedLoading] = useState(true);
+  
 
   const getLinks = () => {
     fetch(BASE_URL + "SocialMedia")
       .then((c) => c.json())
-      .then((c) => setLinks(c));
+      .then((c) => {
+        setLinks(c);
+        setIsLinksLoading(false)
+  });
   };
   const getCategories = () => {
     fetch(BASE_URL + "Category")
       .then((c) => c.json())
-      .then((c) => setCategories(c));
+      .then((c) => {
+        setCategories(c);
+        setIsCategoriesLoading(false)
+  });
   };
   const getProducts = () => {
     fetch(BASE_URL + "Product")
@@ -84,17 +102,25 @@ const Home = () => {
   const getLanguages = () => {
     fetch(BASE_URL + "Language")
       .then((c) => c.json())
-      .then((c) => setLanguages(c));
+      .then((c) => {
+        setLanguages(c);
+        setIsLanguagesLoading(false)
+  });
   };
   const getFeatured = () => {
     fetch(BASE_URL + "Game/featured")
       .then((c) => c.json())
-      .then((c) => setFeatured(c));
+      .then((c) => {
+        setFeatured(c);
+        setIsFeaturedLoading(true)
+      });
   };
   const getPlatforms = () => {
     fetch(BASE_URL + "Platform")
       .then((c) => c.json())
-      .then((c) => setPlatforms(c));
+      .then((c) => {setPlatforms(c); 
+        setIsPlatformsLoading(false)}
+      );
   };
 
   const [activePlatform, setActivePlatform] = useState("All");
@@ -161,7 +187,8 @@ const Home = () => {
       />
 
       <Slider {...settings}>
-        {[...featured]
+        {isFeaturedLoading ? Array.from({length:3}).map(i => <SliderSkeleton key={i}/>) :
+        [...featured]
           ?.sort((a, b) => (a.dateCreated < b.dateCreated ? 1 : -1))
           .slice(0, 3)
           .map((c, index) => (
@@ -237,11 +264,7 @@ const Home = () => {
             </div>
           ))}
       </Slider>
-{
-  Array.from({length: 6}).map((i) =>
-    <GameDetailSkeleton/>
-  )
-}
+
       <section className="about py-20">
         <div className="grid lg:grid-cols-3 grid-cols-1 gap-10 w-full min-[992px]:max-w-[1140px] max-w-full mx-auto px-[1.154rem] md:px-[2.308rem] min-[1200px]:px-[15px]">
           <div className="shadow-[0_0_3rem_rgba(0,0,0,0.23)] bg-[url('/img/box-1-bg.jpg')] bg-cover bg-center bg-no-repeat p-10 relative before:bg-black before:opacity-50 before:absolute before:top-0 before:left-0 before:w-full before:h-full ">
@@ -298,6 +321,9 @@ const Home = () => {
       <section className="games pb-[150px]">
         <div className="platform-names mb-[60px]" ref={ref}>
           <ul className="unstyled flex flex-row flex-wrap gap-y-6 justify-center items-center px-2">
+            {isPlatformsLoading ? <PlatformNameSkeleton/> :
+            (<>
+            
             <li className="relative">
               <PlatformButton
                 name="All"
@@ -305,19 +331,23 @@ const Home = () => {
                 onClick={() => handleButtonClick("All", games)}
               />
             </li>
+            {
 
-            {platforms?.map((platform) => (
-              <li className="relative" key={platform.id}>
-                <PlatformButton
-                  key={platform.name}
-                  name={platform.name}
-                  isActive={activePlatform === platform.name}
-                  onClick={() =>
-                    handleButtonClick(platform.name, platform.games)
-                  }
-                />
-              </li>
-            ))}
+platforms?.map((platform) => (
+  <li className="relative" key={platform.id}>
+    <PlatformButton
+      key={platform.name}
+      name={platform.name}
+      isActive={activePlatform === platform.name}
+      onClick={() =>
+        handleButtonClick(platform.name, platform.games)
+      }
+    />
+  </li>
+))}
+            </>
+            
+           )}
             {isOverflowing && (
               <PlatformButton
                 name="More"
@@ -330,15 +360,13 @@ const Home = () => {
           </ul>
         </div>
         <div className="al-games mb-[50px] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 min-[1200px]:max-w-[1140px] max-w-full mx-auto px-[1.154rem] md:px-[2.308rem] min-[1200px]:px-[15px]">
-          {/* {games?.map((g) => (
-            <GameDetail {...g} />
-          ))} */}
-          {[...platformGameList]
+          {isGamesLoading ? Array(8).fill(null).map(i => <GameDetailSkeleton key={i}/>) : (
+          [...platformGameList]
             ?.sort((a, b) => (a.dateCreated < b.dateCreated ? 1 : -1))
             .slice(0, 8)
             .map((g) => (
               <GameDetail key={g.id} {...g} />
-            ))}
+            )))}
         </div>
         <div className="flex justify-center items-center">
           <ul className="unstyled">
@@ -401,12 +429,12 @@ const Home = () => {
             </h1>
           </div>
           <div className="grid md:grid-cols-3 grid-cols-2 gap-8">
-            {[...games]
+            {isFeaturedLoading ? Array(6).fill(null).map(i => <GameDetailSkeleton key={i}/>): ([...featured]
               ?.sort((a, b) => (a.dateCreated < b.dateCreated ? 1 : -1))
               .slice(0, 6)
               .map((g) => (
                 <GameCoverDetail key={g.id} {...g} />
-              ))}
+              )))}
           </div>
         </div>
       </section>

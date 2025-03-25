@@ -9,6 +9,12 @@ import Newsletter from "@/components/Newsletter";
 import PlatformButton from "@/components/PlatformButton";
 
 import SignUp from "@/components/SignUp";
+import GameDescriptionSkeleton from "@/components/Skeletons/GameDescriptionSkeleton";
+import GameNameSkeleton from "@/components/Skeletons/GameNameSkeleton";
+import GamePhotoSkeleton from "@/components/Skeletons/GamePhotoSkeleton";
+import LanguagesSkeleton from "@/components/Skeletons/LanguagesSkeleton";
+import PlatformNameSkeleton from "@/components/Skeletons/PlatformNameSkeleton";
+import SystemRequirementsSkeleton from "@/components/Skeletons/SystemRequirementsSkeleton";
 import SocialMedia from "@/components/SocialMedia";
 import {
   addToCart,
@@ -43,12 +49,16 @@ const GameSingle = () => {
   const { id } = useParams();
   
   const [game, setGame] = useState([]);
+  const [isGameLoading, setIsGameLoading] = useState(true)
   const router = useRouter()
   const getGame = (id) => {
     
       fetch(BASE_URL + `Game/${id}`)
       .then((c) => c.json())
-      .then((r) => setGame(r.data));
+      .then((r) => {
+        setGame(r.data);
+        setIsGameLoading(false)
+  });
       
     
     
@@ -101,12 +111,13 @@ const GameSingle = () => {
   return (
     <>
       <Header />
-      <Heading name={game?.name} />
+      <Heading name={isGameLoading ? <GameNameSkeleton/> : game?.name} />
       <section className="main">
         <div className="single-game min-[1200px]:max-w-[1140px] max-w-full mx-auto px-[1.154rem] md:px-[2.308rem] min-[1200px]:px-[15px] py-[80px]">
           <div className="grid lg:grid-cols-[65%_32%] grid-cols-1 lg:gap-[3%]">
             <div className="left-side">
               <div className="game-image mb-[30px]">
+                {isGameLoading ? <GamePhotoSkeleton/> :
                 <Image
                   src={`/img/${game?.largePhotoUrl}`}
                   sizes="100vh"
@@ -114,13 +125,18 @@ const GameSingle = () => {
                   height={0}
                   style={{ width: "100%", height: "auto" }}
                   alt="game-photo"
-                />
+                />}
               </div>
               <div className="about-game md:mb-[30px] mb-[50px] md:p-[30px] md:pr-[45px] pr-[10px] md:shadow-[0_0_3rem_rgba(0,0,0,0.23)]">
-                <h1 className="text-[24px] font-black uppercase mb-[20px]">
-                  About <span className="text-yel">{game?.name}</span>
+                <h1 className="text-[24px] font-black uppercase mb-[20px] flex items-center">
+                  {isGameLoading ? <GameNameSkeleton/> : (
+    <>
+      About <span className="text-yel ml-1">{game?.name}</span>
+    </>
+  )}
                 </h1>
-                <p className="text-[14px] mb-[20px]">{game?.longDescription}</p>
+                {isGameLoading? <GameDescriptionSkeleton/> :
+                <p className="text-[14px] mb-[20px]">{game?.longDescription}</p>}
               </div>
               <div
                 className="details md:p-[30px] md:pr-[45px] pr-[10px] md:shadow-[0_0_3rem_rgba(0,0,0,0.23)] md:mb-[30px] mb-[50px]"
@@ -129,6 +145,7 @@ const GameSingle = () => {
                 <h1 className="font-black text-[24px] mb-[20px] uppercase">
                   Minimum <span className="text-yel">system requirements</span>
                 </h1>
+                {isGameLoading ? <PlatformNameSkeleton/> :
                 <ul className="unstyled flex my-[40px]">
                   {game?.minimumReqs?.map((reqs) => (
                     <li key={reqs.osName}>
@@ -144,9 +161,10 @@ const GameSingle = () => {
                       />
                     </li>
                   ))}
-                </ul>
+                </ul>}
                 <div className="minimum mb-[30px]">
-                  <ul className="">
+                {isGameLoading ? <SystemRequirementsSkeleton/> : <ul className="">
+                    
                     {reqsList.os && (
                       <li className="flex items-center mb-[15px]">
                         <p className="uppercase font-bold text-[12px] w-[20%]">
@@ -213,7 +231,8 @@ const GameSingle = () => {
                         </p>
                       </li>
                     )}
-                  </ul>
+                  </ul>}
+                  
                 </div>
 
                 {game?.additionalNotes && (
@@ -221,17 +240,19 @@ const GameSingle = () => {
                     <p className="uppercase font-bold text-[12px] mb-[10px]">
                       additional notes:
                     </p>
-                    <p className="text-[12px]">{game?.additionalNotes}</p>
+                    {isGameLoading ? <div className="w-full h-4 animate-pulse bg-gray-300 rounded"></div> :
+                    <p className="text-[12px]">{game?.additionalNotes}</p>}
                   </div>
                 )}
 
                 <div className="buy flex items-center justify-between">
                   <div className="price">
                     <h2 className="uppercase text-[18px] font-bold">
-                      Price:{" "}
-                      {game?.discountedPrice !== game?.originalPrice ? (
+                      Price:
+                      {isGameLoading ? <span className="ml-[10px] lowercase">Loading...</span> : <>
+                        {game?.discountedPrice !== game?.originalPrice ? (
                         <>
-                          <span className="text-black font-black mr-[10px] line-through">
+                          <span className="text-black font-black mx-[10px] line-through">
                             ${game?.originalPrice}
                           </span>
                           <span className="text-yel font-black">
@@ -239,10 +260,12 @@ const GameSingle = () => {
                           </span>
                         </>
                       ) : (
-                        <span className="text-yel font-black">
+                        <span className="text-yel font-black mx-[10px]">
                           ${game?.originalPrice}
                         </span>
                       )}
+                      </>
+}
                     </h2>
                   </div>
                   <div
@@ -290,6 +313,7 @@ const GameSingle = () => {
                   <h1 className="font-black text-[24px] mb-[20px]">
                     GAME <span className="text-yel">DETAILS</span>
                   </h1>
+                  {isGameLoading ? <SystemRequirementsSkeleton/> : 
                   <ul className="">
                     <li className="flex items-center mb-[15px]">
                       <FaTags className="text-yel w-[7%] mr-[10px]" />
@@ -387,12 +411,13 @@ const GameSingle = () => {
                         </a>
                       </div>
                     </li>
-                  </ul>
+                  </ul>}
                 </div>
                 <div className="languages p-[30px] pr-[45px] shadow-[0_0_3rem_rgba(0,0,0,0.23)]">
                   <h1 className="font-black text-[24px] mb-[20px] uppercase">
                     languages
                   </h1>
+                  {isGameLoading ? <LanguagesSkeleton/> :
                   <ul className="">
                     <li className="flex items-center  justify-between border-b-[1px] py-[10px]">
                       <p className="uppercase text-yel text-[12px] font-black w-[28%]">
@@ -429,7 +454,7 @@ const GameSingle = () => {
                         </span>
                       </li>
                     ))}
-                  </ul>
+                  </ul>}
                 </div>
               </div>
             </div>
