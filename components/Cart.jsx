@@ -16,6 +16,7 @@ const Cart = forwardRef(({ closeCart }, ref) => {
              
                       className="absolute z-50 p-[20px] rounded-sm bg-white shadow-[0_0_3rem_rgba(0,0,0,0.23)] w-[400px] top-[150%] right-0" ref={ref} 
                     >
+                      
                         {cartItems.length > 0 ? 
                         (
                             <div className=''>

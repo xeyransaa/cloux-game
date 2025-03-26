@@ -43,6 +43,7 @@ const Home = () => {
     dots: true,
     autoplaySpeed: 5000,
     arrows: false,
+    infinite: false
   };
   const [games, setGames] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -112,7 +113,7 @@ const Home = () => {
       .then((c) => c.json())
       .then((c) => {
         setFeatured(c);
-        setIsFeaturedLoading(true)
+        setIsFeaturedLoading(false)
       });
   };
   const getPlatforms = () => {
@@ -132,7 +133,7 @@ const Home = () => {
   const [platformName, setPlatformName] = useState("");
   const handleButtonClick = (name, gameList) => {
 
-
+  console.log(isFeaturedLoading)
     if (name === "More") {
       setIsMoreActive(!isMoreActive);
     } else if (name === "All") {
@@ -182,16 +183,17 @@ const Home = () => {
   return (
     <>
       <Header
-        onClickLogin={() => setShowLogin(true)}
-        onClickSignup={() => setShowSignUp(true)}
+       
       />
 
       <Slider {...settings}>
-        {isFeaturedLoading ? Array.from({length:3}).map(i => <SliderSkeleton key={i}/>) :
+        {isFeaturedLoading ? Array.from({length:3}).map((_, i) => {
+          console.log("key is ", i);
+          return <SliderSkeleton key={`slide-${i}`}/>}) :
         [...featured]
           ?.sort((a, b) => (a.dateCreated < b.dateCreated ? 1 : -1))
           .slice(0, 3)
-          .map((c, index) => (
+          .map((c) => (
             <div key={`game-${c.id}`}>
               <div
                 className={`top-game top-game-1 flex justify-center items-center h-screen min-h-[600px]`}
@@ -360,7 +362,7 @@ platforms?.map((platform) => (
           </ul>
         </div>
         <div className="al-games mb-[50px] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 min-[1200px]:max-w-[1140px] max-w-full mx-auto px-[1.154rem] md:px-[2.308rem] min-[1200px]:px-[15px]">
-          {isGamesLoading ? Array(8).fill(null).map(i => <GameDetailSkeleton key={i}/>) : (
+          {isGamesLoading ? Array(8).fill(null).map((_, i) => <GameDetailSkeleton key={i}/>) : (
           [...platformGameList]
             ?.sort((a, b) => (a.dateCreated < b.dateCreated ? 1 : -1))
             .slice(0, 8)
@@ -429,7 +431,7 @@ platforms?.map((platform) => (
             </h1>
           </div>
           <div className="grid md:grid-cols-3 grid-cols-2 gap-8">
-            {isFeaturedLoading ? Array(6).fill(null).map(i => <GameDetailSkeleton key={i}/>): ([...featured]
+            {isFeaturedLoading ? Array(6).fill(null).map((_, i) => <GameDetailSkeleton key={i}/>) : ([...featured]
               ?.sort((a, b) => (a.dateCreated < b.dateCreated ? 1 : -1))
               .slice(0, 6)
               .map((g) => (

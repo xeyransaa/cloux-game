@@ -84,10 +84,13 @@ const GameSingle = () => {
   
 
   useEffect(() => {
-    if (game?.minimumReqs && game?.minimumReqs.length > 0) {
-      setReqsList(game?.minimumReqs[0].systemRequirements);
+    if (!game?.minimumReqs) return;
+  
+    const match = game.minimumReqs.find(req => req.osName === activeOS);
+    if (match) {
+      setReqsList(match.systemRequirements);
     }
-  }, [game]);
+  }, [game, activeOS]);
 
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -119,7 +122,7 @@ const GameSingle = () => {
               <div className="game-image mb-[30px]">
                 {isGameLoading ? <GamePhotoSkeleton/> :
                 <Image
-                  src={`/img/${game?.largePhotoUrl}`}
+                  src={game?.largePhotoUrl ? `/img/${game.largePhotoUrl}` : "/img/game-placeholder.png"}
                   sizes="100vh"
                   width={0}
                   height={0}
@@ -323,7 +326,7 @@ const GameSingle = () => {
                       <div className="text-[12px] w-[50%]">
                         {game?.categoryNames?.map((categoryName, index) => (
                           <React.Fragment key={categoryName}>
-                            <a href="">{categoryName}</a>
+                            <a href={`/games/category/${categoryName}`}>{categoryName}</a>
                             {index < game?.categoryNames.length - 1 && (
                               <span className="mr-[5px]">,</span>
                             )}
@@ -346,8 +349,14 @@ const GameSingle = () => {
                         Developer:
                       </p>
                       <div className="text-[12px] w-[50%]">
-                        <a href="">Gamevision,</a>
-                        <a href="">Xtra Soft</a>
+                        {game?.developerNames?.map((developerName, index) => (
+                          <React.Fragment key={developerName}>
+                            <a href="">{developerName}</a>
+                            {index < game?.developerNames.length - 1 && (
+                              <span className="mr-[5px]">,</span>
+                            )}
+                          </React.Fragment>
+                        ))}
                       </div>
                     </li>
 
@@ -359,7 +368,7 @@ const GameSingle = () => {
                       <div className="text-[12px] w-[50%]">
                         {game?.platformNames?.map((platformName, index) => (
                           <React.Fragment key={platformName}>
-                            <a href="">{platformName}</a>
+                            <a href={`/games/platform/${platformName}`}>{platformName}</a>
                             {index < game?.platformNames.length - 1 && (
                               <span className="mr-[5px]">,</span>
                             )}

@@ -39,7 +39,7 @@ const About = () => {
                 Voluptate ullam error, eius dolore deserunt nostrum consectetur
                 perspiciatis sunt!
               </p>
-              <FancyButton content="all games" />
+              <FancyButton content="all games" link="/games" />
             </div>
           </div>
           <div className="shadow-[0_0_3rem_rgba(0,0,0,0.23)] bg-[url('/img/box-2-bg.jpg')] bg-cover bg-center bg-no-repeat p-10 relative before:bg-black before:opacity-50 before:absolute before:top-0 before:left-0 before:w-full before:h-full ">
@@ -55,7 +55,7 @@ const About = () => {
                 Voluptate ullam error, eius dolore deserunt nostrum consectetur
                 perspiciatis sunt!
               </p>
-              <FancyButton content="read more" />
+              <FancyButton content="read more" link="/about"/>
             </div>
           </div>
           <div className="shadow-[0_0_3rem_rgba(0,0,0,0.23)] bg-[url('/img/box-3-bg.jpg')] bg-cover bg-center bg-no-repeat p-10 relative before:bg-black before:opacity-50 before:absolute before:top-0 before:left-0 before:w-full before:h-full ">
@@ -71,7 +71,7 @@ const About = () => {
                 Voluptate ullam error, eius dolore deserunt nostrum consectetur
                 perspiciatis sunt!
               </p>
-              <FancyButton content="contact" />
+              <FancyButton content="contact" link="contact" />
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 "use client";
 import Footer from "@/components/Footer";
 
-import GamesList from "@/components/GameList";
+import GamesList from "@/components/GamesList";
 import Header from "@/components/Header";
 import Heading from "@/components/Heading";
 import Login from "@/components/Login";

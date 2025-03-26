@@ -12,26 +12,19 @@ import {
   FaYoutube,
 } from "react-icons/fa6";
 
-import Login from "./Login";
-import SignUp from "./SignUp";
+
 import { BASE_URL } from "@/api/BaseConfig";
-import Account from "./Account";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Cart from "./Cart";
 import { useSelector } from "react-redux";
 
 const Header = () => {
   const [links, setLinks] = useState([]);
   const location = usePathname();
-
   const [showMenu, setShowMenu] = useState(false);
-
-  const [showLogin, setShowLogin] = useState(false);
-  const [showSignUp, setShowSignUp] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
-  const [showAccount, setShowAccount] = useState(false);
-  const [showProfilePic, setShowProfilePic] = useState(false);
-  const [showCart, setShowCart] = useState(false)
+  const [showCart, setShowCart] = useState(false);
+  const router = useRouter();
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -107,46 +100,9 @@ const ref = useRef(null);
                       </React.Fragment>
                     ))}
                   </div>
-                  {showProfilePic ? (
-                    <div className="profile-pic w-[50px] h-[50px] border-2 rounded-full relative">
-                      <a
-                        href=""
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setShowAccount(!showAccount);
-                        }}
-                      >
-                        <Image
-                          src="/img/icons8-user-96.png"
-                          fill
-                          alt="profile-pic"
-                          className="rounded-full"
-                        ></Image>
-                      </a>
-                    </div>
-                  ) : (
-                    <div className="registration flex">
-                      <button
-                        className="login text-white bg-yel text-[12px] rounded-l-[30px] py-2 pl-[24px] pr-[12px] border-r border-solid border-white "
-                        onClick={() => setShowLogin(true)}
-                      >
-                        LOGIN
-                      </button>
-                      <button
-                        className="sign-up text-white bg-yel text-[12px] rounded-r-[30px] py-2 pl-[12px] pr-[24px] border-l border-solid border-white"
-                        onClick={() => setShowSignUp(true)}
-                      >
-                        SIGN UP
-                      </button>
-                    </div>
-                  )}
+                  
 
-                  {showAccount && (
-                    <Account
-                      closeAccount={() => setShowAccount(false)}
-                      logOut={() => setShowProfilePic(false)}
-                    />
-                  )}
+                  
                   <div className="cart ml-[20px] relative">
                     <button className="flex items-center" onClick={() => setShowCart(!showCart)}>
                     <FaCartShopping className="text-yel text-[24px]"/>
@@ -258,30 +214,8 @@ const ref = useRef(null);
                     alt="logo"
                   />
                 </a>
-                {!showProfilePic && (
-                  <div className="profile-pic w-[50px] h-[50px] border-2 border-black rounded-full relative">
-                    <a
-                      href=""
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setShowAccount(!showAccount);
-                      }}
-                    >
-                      <Image
-                        src="/img/icons8-user-96 (1).png"
-                        fill
-                        alt="profile picture"
-                        className="rounded-full"
-                      ></Image>
-                    </a>
-                  </div>
-                )}
-                {showAccount && (
-                  <Account
-                    closeAccount={() => setShowAccount(false)}
-                    logOut={() => setShowProfilePic(false)}
-                  />
-                )}
+                
+                
               </div>
 
               <ul>
@@ -346,51 +280,27 @@ const ref = useRef(null);
                       </a>
                     </React.Fragment>
                   ))}
+                  <div className="cart ml-[20px] relative">
+                    <button className="flex items-center" onClick={() => router.push('/cart')}>
+                    <FaCartShopping className="text-yel text-[24px]"/>
+
+                    </button>
+                    {showCart && <Cart closeCart={closeCart} ref={ref}/>}
+                 <span className="count-of-items absolute bottom-[60%] left-[70%] bg-white text-[10px] w-[16px]  rounded-[10px] text-center">
+                  {totalQuantity}
+                 </span>
+
+                  </div>
                 </div>
               </div>
 
-              {showProfilePic && (
-                <div className="registration flex w-full">
-                  <button
-                    className="login text-white bg-yel text-[12px] py-2 w-1/2 border-r border-solid border-[rgba(0,0,0,0.08)]"
-                    onClick={() => setShowLogin(true)}
-                  >
-                    LOGIN
-                  </button>
-                  <button
-                    className="sign-up text-white bg-yel text-[12px] py-2 w-1/2"
-                    onClick={() => setShowSignUp(true)}
-                  >
-                    SIGN UP
-                  </button>
-                </div>
-              )}
+             
             </div>
           </div>
         )}
       </header>
 
-      {showLogin && (
-        <Login
-          onClose={() => setShowLogin(false)}
-          switchToSignUp={() => {
-            setShowLogin(false);
-            setShowSignUp(true);
-          }}
-          profilePic={() => {
-            setShowProfilePic(true);
-          }}
-        />
-      )}
-      {showSignUp && (
-        <SignUp
-          onClose={() => setShowSignUp(false)}
-          switchToLogin={() => {
-            setShowSignUp(false);
-            setShowLogin(true);
-          }}
-        />
-      )}
+      
     </>
   );
 };

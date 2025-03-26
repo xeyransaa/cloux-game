@@ -8,8 +8,8 @@ const GameCoverDetail = (props) => {
       <div onClick={() => (window.location.href = `/games/${props.id}`)}>
         <div className="relative after:content-[''] after:absolute after:top-0 after:left-0 after:w-full after:h-full after:bg-custom after:opacity-70">
           <Image
-            src={`/img/${props.posterUrl}`}
-            alt="space"
+            src={props.posterUrl ? `/img/${props.posterUrl}` : '/img/game-placeholder.png'}
+            alt={props.posterUrl ? "Game poster" : "Placeholder fallback"}
             width={0}
             height={0}
             sizes="100vw"

@@ -8,7 +8,8 @@ const GameDetail = (props) => {
       <div className="image relative w-full mb-[20px] shadow-[0_0_3rem_rgba(0,0,0,0.23)]">
         <a href={`/games/${props.id}`} className="">
           <Image
-            src={`/img/${props.posterUrl}`}
+            src={props?.posterUrl ? `/img/${props.posterUrl}` : "/img/game-placeholder.png"}
+        
             alt="game-image"
             width={0}
             height={0}
@@ -19,7 +20,7 @@ const GameDetail = (props) => {
         <div className="categories flex items-center absolute bottom-[20px] right-[20px] text-white text-[10px]">
           {props.categoryNames?.map((categoryName, index) => (
             <React.Fragment key={categoryName}>
-              <a href="" className="uppercase">
+              <a href={`/games/category/${categoryName}`} className="uppercase">
                 {categoryName}
               </a>
               {index < props.categoryNames.length - 1 && (
@@ -46,7 +47,7 @@ const GameDetail = (props) => {
           <React.Fragment key={platformName}>
             <a
               className="transition duration-200 ease-in hover:text-yel uppercase"
-              href="#"
+              href={`/games/platform/${platformName}`}
             >
               {platformName}
             </a>

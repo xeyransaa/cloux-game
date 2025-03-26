@@ -4,15 +4,20 @@ import { BASE_URL } from "@/api/BaseConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { FaMinus, FaPlus, FaTrashCan } from "react-icons/fa6";
 import { decreaseQuantity, increaseQuantity, removeFromCart } from "@/Redux/features/Cart/CartSlice";
+import CartItemSkeleton from "./Skeletons/CartItemSkeleton";
 
 const CartItem = ({ gameId }) => {
   const [game, setGame] = useState([]);
   const cartItems = useSelector((state) => state.cart.cartItems);
   const gameInCart = cartItems.find((c) => c.id == gameId);
+  const [isGameLoading, setIsGameLoading] = useState(true)
   const getGame = (gameId) => {
     fetch(BASE_URL + `game/${gameId}`)
       .then((c) => c.json())
-      .then((c) => setGame(c.data));
+      .then((c) => {
+        setGame(c.data);
+        setIsGameLoading(false)
+      });
   };
 
   useEffect(() => {
@@ -22,7 +27,8 @@ const CartItem = ({ gameId }) => {
 
   return (
     <div className="flex justify-between mb-[15px]">
-      <a href={`/games/${game.id}`} className="mr-[10px] w-[15%] ">
+      {isGameLoading ? <CartItemSkeleton/> : <>
+        <a href={`/games/${game.id}`} className="mr-[10px] w-[15%] ">
         <Image
           src={`/img/${game.posterUrl}`}
           width={0}
@@ -65,6 +71,8 @@ const CartItem = ({ gameId }) => {
       </div>
                 
               </div>
+      </>}
+      
      
     </div>
   );
