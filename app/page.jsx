@@ -1,16 +1,16 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { fetchData } from "@/services/api";
-import Header from "@/components/Header";
-import HeroSlider from "@/components/HeroSlider";
-import AboutCards from "@/components/AboutCards";
-import PlatformGames from "@/components/PlatformGames";
-import NewGame from "@/components/NewGame";
-import FeaturedGames from "@/components/FeaturedGames";
-import AboutCloux from "@/components/AboutCloux";
-import Newsletter from "@/components/Newsletter";
-import SocialMedia from "@/components/SocialMedia";
-import Footer from "@/components/Footer";
+import Header from "@/components/Layout/Header";
+import HeroSlider from "@/components/Home/HeroSlider";
+import AboutCards from "@/components/About/AboutCards";
+import PlatformGames from "@/components/Home/PlatformGames";
+import NewGame from "@/components/Home/NewGame";
+import FeaturedGames from "@/components/Home/FeaturedGames";
+import AboutCloux from "@/components/Home/AboutCloux";
+import Newsletter from "@/components/Layout/Newsletter";
+import SocialMedia from "@/components/Layout/SocialMedia";
+import Footer from "@/components/Layout/Footer";
 
 const Home = () => {
   const [data, setData] = useState({
@@ -40,22 +40,24 @@ const Home = () => {
       platforms: false,
     });
   };
-  
 
   useEffect(() => {
     loadData();
   }, []);
 
-
   return (
     <>
-      <Header/>
-      <HeroSlider featured={data.featured} isLoading={loading.featured}/>
-      <AboutCards/>
-      <PlatformGames games={data.games} platforms={data.platforms} isLoading={loading.games || loading.platforms}/>
-      <NewGame/>
-      <FeaturedGames featured={data.featured} isLoading={loading.featured}/>
-      <AboutCloux/>
+      <Header />
+      <HeroSlider featured={data.featured} isLoading={loading.featured} />
+      <AboutCards />
+      <PlatformGames
+        games={data.games}
+        platforms={data.platforms}
+        isLoading={loading.games || loading.platforms}
+      />
+      <NewGame />
+      <FeaturedGames featured={data.featured} isLoading={loading.featured} />
+      <AboutCloux />
       <Newsletter />
       <SocialMedia />
       <Footer />

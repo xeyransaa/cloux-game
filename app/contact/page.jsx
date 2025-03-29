@@ -1,10 +1,10 @@
 "use client";
 import { BASE_URL } from "@/api/BaseConfig";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import Heading from "@/components/Heading";
-import Newsletter from "@/components/Newsletter";
-import SocialMedia from "@/components/SocialMedia";
+import Footer from "@/components/Layout/Footer";
+import Header from "@/components/Layout/Header";
+import Heading from "@/components/UI/Heading";
+import Newsletter from "@/components/Layout/Newsletter";
+import SocialMedia from "@/components/Layout/SocialMedia";
 import React, { useEffect, useRef, useState } from "react";
 import {
   FaEnvelope,
@@ -15,7 +15,6 @@ import {
 } from "react-icons/fa6";
 
 const Contact = () => {
-  
   const [showAlert, setShowAlert] = useState(false);
   const ref = useRef();
 
@@ -73,7 +72,7 @@ const Contact = () => {
           <div className="md:flex justify-between">
             <div className="message-form mr-[20px] mb-[70px] w-full md:w-[60%]">
               <form onSubmit={submitForm} method="post" action="">
-                <div className="grid grid-cols-2 gap-4 mb-[20px]">
+                <div className="grid grid-cols-2 gap-4 mb-5">
                   <input
                     type="text"
                     value={name}
@@ -123,9 +122,9 @@ const Contact = () => {
                   className="fixed z-50 px-[50px] flex justify-center items-center bg-white rounded-3xl shadow-[0_0_3rem_rgba(0,0,0,0.23)] w-[500px] h-[300px] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
                 >
                   <div className="flex flex-col items-center text-center">
-                    <FaRegCircleCheck className="text-yel text-[64px] mb-[20px]" />
+                    <FaRegCircleCheck className="text-yel text-[64px] mb-5" />
                     <h1 className="text-[28px] mb-[10px]">Thank you!</h1>
-                    <p className="mb-[20px]">
+                    <p className="mb-5">
                       Your message has been submitted. We will get back to you
                       soon.
                     </p>
@@ -193,7 +192,6 @@ const Contact = () => {
       <Newsletter />
       <SocialMedia />
       <Footer />
-
     </>
   );
 };

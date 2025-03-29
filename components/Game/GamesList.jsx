@@ -1,9 +1,9 @@
 "use client";
 import { BASE_URL } from "@/api/BaseConfig";
 
-import GameDetail from "@/components/GameDetail";
+import GameDetail from "@/components/Game/GameDetail";
 
-import PlatformButton from "@/components/PlatformButton";
+import PlatformButton from "@/components/UI/PlatformButton";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -13,7 +13,7 @@ import {
   FaAnglesLeft,
   FaAnglesRight,
 } from "react-icons/fa6";
-import GameDetailSkeleton from "./Skeletons/GameDetailSkeleton";
+import GameDetailSkeleton from "../Skeletons/GameDetailSkeleton";
 
 const GamesList = () => {
   const searchParams = useSearchParams();

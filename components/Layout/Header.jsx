@@ -12,10 +12,9 @@ import {
   FaYoutube,
 } from "react-icons/fa6";
 
-
 import { BASE_URL } from "@/api/BaseConfig";
 import { usePathname, useRouter } from "next/navigation";
-import Cart from "./Cart";
+import Cart from "../Cart/Cart";
 import { useSelector } from "react-redux";
 
 const Header = () => {
@@ -31,8 +30,8 @@ const Header = () => {
     setShowHeader(!showHeader);
   };
   const closeCart = () => {
-    setShowCart(false)
-  } 
+    setShowCart(false);
+  };
 
   const getLinks = () => {
     fetch(BASE_URL + "SocialMedia")
@@ -40,27 +39,27 @@ const Header = () => {
       .then((c) => setLinks(c));
   };
 
-const ref = useRef(null);
-    const handleClickOutside = (event) => {
-        if (ref.current && !event.composedPath().includes(ref.current)) {
-          setShowCart(false);
-        }
-      };
+  const ref = useRef(null);
+  const handleClickOutside = (event) => {
+    if (ref.current && !event.composedPath().includes(ref.current)) {
+      setShowCart(false);
+    }
+  };
 
-    useEffect(() => {
-        if (!showCart) return;
-        document.addEventListener("click", handleClickOutside);
-        return () => {
-          document.removeEventListener("click", handleClickOutside);
-        };
-      }, [showCart]);
+  useEffect(() => {
+    if (!showCart) return;
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [showCart]);
 
   useEffect(() => {
     getLinks();
   }, []);
 
-  const cartItems = useSelector((state) => state.cart.cartItems)
-  const totalQuantity = cartItems.reduce((sum, i) => sum + i.quantity, 0)
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  const totalQuantity = cartItems.reduce((sum, i) => sum + i.quantity, 0);
 
   return (
     <>
@@ -81,7 +80,7 @@ const ref = useRef(null);
                 </a>
               </div>
               <div className="header-items">
-                <div className="top-header flex justify-end items-center mb-[20px] relative">
+                <div className="top-header flex justify-end items-center mb-5 relative">
                   <div className="buttons flex items-center mr-[40px]">
                     {links.map((link) => (
                       <React.Fragment key={link.name}>
@@ -100,19 +99,18 @@ const ref = useRef(null);
                       </React.Fragment>
                     ))}
                   </div>
-                  
 
-                  
                   <div className="cart ml-[20px] relative">
-                    <button className="flex items-center" onClick={() => setShowCart(!showCart)}>
-                    <FaCartShopping className="text-yel text-[24px]"/>
-
+                    <button
+                      className="flex items-center"
+                      onClick={() => setShowCart(!showCart)}
+                    >
+                      <FaCartShopping className="text-yel text-[24px]" />
                     </button>
-                    {showCart && <Cart closeCart={closeCart} ref={ref}/>}
-                 <span className="count-of-items absolute bottom-[60%] left-[70%] bg-white text-[10px] w-[16px]  rounded-[10px] text-center">
-                  {totalQuantity}
-                 </span>
-
+                    {showCart && <Cart closeCart={closeCart} ref={ref} />}
+                    <span className="count-of-items absolute bottom-[60%] left-[70%] bg-white text-[10px] w-[16px]  rounded-[10px] text-center">
+                      {totalQuantity}
+                    </span>
                   </div>
                 </div>
                 <div className="bottom-header flex justify-end items-center">
@@ -214,8 +212,6 @@ const ref = useRef(null);
                     alt="logo"
                   />
                 </a>
-                
-                
               </div>
 
               <ul>
@@ -281,26 +277,23 @@ const ref = useRef(null);
                     </React.Fragment>
                   ))}
                   <div className="cart ml-[20px] relative">
-                    <button className="flex items-center" onClick={() => router.push('/cart')}>
-                    <FaCartShopping className="text-yel text-[24px]"/>
-
+                    <button
+                      className="flex items-center"
+                      onClick={() => router.push("/cart")}
+                    >
+                      <FaCartShopping className="text-yel text-[24px]" />
                     </button>
-                    {showCart && <Cart closeCart={closeCart} ref={ref}/>}
-                 <span className="count-of-items absolute bottom-[60%] left-[70%] bg-white text-[10px] w-[16px]  rounded-[10px] text-center">
-                  {totalQuantity}
-                 </span>
-
+                    {showCart && <Cart closeCart={closeCart} ref={ref} />}
+                    <span className="count-of-items absolute bottom-[60%] left-[70%] bg-white text-[10px] w-[16px]  rounded-[10px] text-center">
+                      {totalQuantity}
+                    </span>
                   </div>
                 </div>
               </div>
-
-             
             </div>
           </div>
         )}
       </header>
-
-      
     </>
   );
 };

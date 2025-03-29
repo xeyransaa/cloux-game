@@ -33,12 +33,12 @@ const Footer = () => {
         <div className="footer-wrapper min-[1200px]:max-w-[1140px] max-w-full mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="about">
-              <div className="title uppercase font-black text-[24px] mb-[20px]">
+              <div className="title uppercase font-black text-[24px] mb-5">
                 <h2 className="text-white">
                   about <span className="text-yel">us</span>
                 </h2>
               </div>
-              <div className="desc mb-[20px] text-white text-[14px]">
+              <div className="desc mb-5 text-white text-[14px]">
                 <p>
                   Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illo
                   velit ipsam porro dolores voluptatibus quis facilis ullam
@@ -95,7 +95,7 @@ const Footer = () => {
             </div>
 
             <div className="apps">
-              <div className="title uppercase font-black text-[24px] mb-[20px]">
+              <div className="title uppercase font-black text-[24px] mb-5">
                 <h2 className="text-white">
                   apps <span className="text-yel">& platforms</span>
                 </h2>
@@ -170,7 +170,7 @@ const Footer = () => {
               </div>
             </div>
             <div className="contact mt-[15px] lg:hidden">
-              <div className="title uppercase font-black text-[24px] mb-[20px]">
+              <div className="title uppercase font-black text-[24px] mb-5">
                 <h2 className="text-white">
                   contact <span className="text-yel">us</span>
                 </h2>
@@ -209,7 +209,7 @@ const Footer = () => {
                   </li>
                 </ul>
               </div>
-              <div className="desc mb-[20px] text-white text-[14px]">
+              <div className="desc mb-5 text-white text-[14px]">
                 <p>
                   Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illo
                   velit ipsam porro dolores voluptatibus quis facilis ullam

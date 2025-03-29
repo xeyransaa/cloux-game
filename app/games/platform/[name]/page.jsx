@@ -1,11 +1,11 @@
 "use client";
 import { BASE_URL } from "@/api/BaseConfig";
-import Footer from "@/components/Footer";
-import GameDetail from "@/components/GameDetail";
-import Header from "@/components/Header";
-import Heading from "@/components/Heading";
-import Newsletter from "@/components/Newsletter";
-import SocialMedia from "@/components/SocialMedia";
+import Footer from "@/components/Layout/Footer";
+import GameDetail from "@/components/Game/GameDetail";
+import Header from "@/components/Layout/Header";
+import Heading from "@/components/UI/Heading";
+import Newsletter from "@/components/Layout/Newsletter";
+import SocialMedia from "@/components/Layout/SocialMedia";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -42,8 +42,6 @@ const PlatformGames = () => {
       <Newsletter />
       <SocialMedia />
       <Footer />
-
-      
     </>
   );
 };
