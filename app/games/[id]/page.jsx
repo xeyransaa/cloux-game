@@ -4,11 +4,8 @@ import { BASE_URL } from "@/api/BaseConfig";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Heading from "@/components/Heading";
-import Login from "@/components/Login";
 import Newsletter from "@/components/Newsletter";
 import PlatformButton from "@/components/PlatformButton";
-
-import SignUp from "@/components/SignUp";
 import GameDescriptionSkeleton from "@/components/Skeletons/GameDescriptionSkeleton";
 import GameNameSkeleton from "@/components/Skeletons/GameNameSkeleton";
 import GamePhotoSkeleton from "@/components/Skeletons/GamePhotoSkeleton";
@@ -50,33 +47,39 @@ const GameSingle = () => {
   
   const [game, setGame] = useState([]);
   const [isGameLoading, setIsGameLoading] = useState(true)
+  const [hasFetched, setHasFetched] = useState(false);
   const router = useRouter()
-  const getGame = (id) => {
+  const getGame = async (id) => {
     
-      fetch(BASE_URL + `Game/${id}`)
-      .then((c) => c.json())
-      .then((r) => {
-        setGame(r.data);
-        setIsGameLoading(false)
-  });
+    try {
+      const response = await fetch(BASE_URL + `Game/${id}`);
+      const result = await response.json();
+  
+      if (result?.data) {
+        setGame(result.data);
+        setIsGameLoading(false);
+        setHasFetched(true);
+      } else {
+        router.push("/games");
+      }
+    } catch (error) {
+      router.push("/games");
+    }
+
+  };
       
     
     
-  };
+  
 
   useEffect(() => {
-    
-    getGame(id);
-    if (game === null) {
-      router.push("/games");
+    if (id) {
+      getGame(id);
     }
-    
-  }, [id, game]);
+  }, [id])
  
   const [reqsList, setReqsList] = useState([]);
   const [activeOS, setActiveOS] = useState("Windows");
-  const [showLogin, setShowLogin] = useState(false);
-  const [showSignUp, setShowSignUp] = useState(false);
   const handleButtonClick = (name, reqsList) => {
     setReqsList(reqsList);
     setActiveOS(name);
@@ -105,6 +108,9 @@ const GameSingle = () => {
   
 
  
+if (!hasFetched) {
+    return null;
+  }
 
 
   
@@ -122,7 +128,7 @@ const GameSingle = () => {
               <div className="game-image mb-[30px]">
                 {isGameLoading ? <GamePhotoSkeleton/> :
                 <Image
-                  src={game?.largePhotoUrl ? `/img/${game.largePhotoUrl}` : "/img/game-placeholder.png"}
+                  src={`/img/${game?.largePhotoUrl}`}
                   sizes="100vh"
                   width={0}
                   height={0}
@@ -351,7 +357,7 @@ const GameSingle = () => {
                       <div className="text-[12px] w-[50%]">
                         {game?.developerNames?.map((developerName, index) => (
                           <React.Fragment key={developerName}>
-                            <a href="">{developerName}</a>
+                            <a href={`/games/developer/${developerName}`}>{developerName}</a>
                             {index < game?.developerNames.length - 1 && (
                               <span className="mr-[5px]">,</span>
                             )}
@@ -474,26 +480,10 @@ const GameSingle = () => {
       <SocialMedia />
       <Footer />
 
-      {showLogin && (
-        <Login
-          onClose={() => setShowLogin(false)}
-          switchToSignUp={() => {
-            setShowLogin(false);
-            setShowSignUp(true);
-          }}
-        />
-      )}
-      {showSignUp && (
-        <SignUp
-          onClose={() => setShowSignUp(false)}
-          switchToLogin={() => {
-            setShowSignUp(false);
-            setShowLogin(true);
-          }}
-        />
-      )}
+    
     </>
   );
 };
+
 
 export default GameSingle;

@@ -3,18 +3,12 @@ import FancyButton from '@/components/FancyButton'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import Heading from '@/components/Heading'
-import Login from '@/components/Login'
 import Newsletter from '@/components/Newsletter'
-
-import SignUp from '@/components/SignUp'
 import SocialMedia from '@/components/SocialMedia'
 import React, { useState } from 'react'
 import { FaGamepad, FaLifeRing, FaRegLifeRing, FaRocket } from 'react-icons/fa6'
 
 const About = () => {
-
-  const [showLogin, setShowLogin] = useState(false)
-  const [showSignUp, setShowSignUp] = useState(false)
 
   return (
     <>
@@ -133,14 +127,7 @@ const About = () => {
     <SocialMedia/>
     <Footer />
     
-      {showLogin && <Login onClose={() => setShowLogin(false)} switchToSignUp={() => {
-            setShowLogin(false);
-            setShowSignUp(true);
-          }} />}
-      {showSignUp && <SignUp onClose={() => setShowSignUp(false)} switchToLogin={() => {
-            setShowSignUp(false);
-            setShowLogin(true);
-          }} />}
+    
     </>
     
   )

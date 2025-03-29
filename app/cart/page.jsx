@@ -3,9 +3,7 @@ import CartIteminPage from '@/components/CartIteminPage';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import Heading from '@/components/Heading';
-import Login from '@/components/Login';
 import Newsletter from '@/components/Newsletter';
-import SignUp from '@/components/SignUp';
 import SocialMedia from '@/components/SocialMedia';
 import { clearCart } from '@/Redux/features/Cart/CartSlice';
 import { useRouter } from 'next/navigation';
@@ -14,8 +12,7 @@ import { FaCartShopping } from 'react-icons/fa6';
 import { useDispatch, useSelector } from 'react-redux';
 
 const CartPage = () => {
-     const [showLogin, setShowLogin] = useState(false);
-      const [showSignUp, setShowSignUp] = useState(false);
+
       const cartItems = useSelector((state) => state.cart.cartItems)
     const totalQuantity = cartItems.reduce((sum, i) => sum + i.quantity, 0)
     const totalPrice = cartItems.reduce((sum, i) => sum + i.quantity*i.price, 0)
@@ -69,11 +66,10 @@ const router = useRouter()
            </button>
            <button
            
-            onClick={()=>   {console.log("Opening modal");
-              setShowModal(true)}}
+            onClick={()=>   {setShowModal(true)}}
              className="text-white bg-yel font-semibold hover:bg-black hover:border-black transition-all duration-200 py-[10px] px-[20px] outline-none text-[18px]"
            >
-            {console.log("showModal is", showModal)}
+            
 
              Clear the cart
            </button>
@@ -131,24 +127,6 @@ const router = useRouter()
       <SocialMedia />
       <Footer />
 
-      {showLogin && (
-        <Login
-          onClose={() => setShowLogin(false)}
-          switchToSignUp={() => {
-            setShowLogin(false);
-            setShowSignUp(true);
-          }}
-        />
-      )}
-      {showSignUp && (
-        <SignUp
-          onClose={() => setShowSignUp(false)}
-          switchToLogin={() => {
-            setShowSignUp(false);
-            setShowLogin(true);
-          }}
-        />
-      )}
     </>
   )
 }

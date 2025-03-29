@@ -5,21 +5,23 @@ import GameDetail from "@/components/GameDetail";
 import Header from "@/components/Header";
 import Heading from "@/components/Heading";
 import Newsletter from "@/components/Newsletter";
+import GameDetailSkeleton from "@/components/Skeletons/GameDetailSkeleton";
 import SocialMedia from "@/components/SocialMedia";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-const CategoryGames = () => {
+const DeveloperGames = () => {
   const { name } = useParams();
-  const [categoryGames, setCategoryGames] = useState([]);
-  const getCategoryGames = (name) => {
-    fetch(BASE_URL + `Category/name/${name}`)
+  const [developerGames, setDeveloperGames] = useState([]);
+  const [isGamesLoading, setIsGamesLoading] = useState(true)
+  const getDeveloperGames = (name) => {
+    fetch(BASE_URL + `Developer/name/${name}`)
       .then((c) => c.json())
-      .then((p) => setCategoryGames(p.data.games));
+      .then((p) => {setDeveloperGames(p.data.games); setIsGamesLoading(false)});
   };
 
   useEffect(() => {
-    getCategoryGames(name);
+    getDeveloperGames(name);
   }, [name]);
 
   const decodedName = decodeURIComponent(name);
@@ -31,11 +33,13 @@ const CategoryGames = () => {
       <section className="main">
         <div className="games min-[1200px]:max-w-[1140px] max-w-full mx-auto px-[1.154rem] md:px-[2.308rem] min-[1200px]:px-[15px] py-[80px]">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {[...categoryGames]
+            {isGamesLoading ? Array.from({length: 8}).map((i) => {
+                <GameDetailSkeleton key={i}/>
+            }) : ([...developerGames]
               ?.sort((a, b) => (a.dateCreated > b.dateCreated ? 1 : -1))
               .map((g) => (
                 <GameDetail {...g} />
-              ))}
+              )))}
           </div>
         </div>
       </section>
@@ -47,4 +51,4 @@ const CategoryGames = () => {
   );
 };
 
-export default CategoryGames;
+export default DeveloperGames;

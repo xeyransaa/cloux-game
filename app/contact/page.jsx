@@ -3,26 +3,19 @@ import { BASE_URL } from "@/api/BaseConfig";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Heading from "@/components/Heading";
-import Login from "@/components/Login";
 import Newsletter from "@/components/Newsletter";
-import PlatformButton from "@/components/PlatformButton";
-
-import SignUp from "@/components/SignUp";
 import SocialMedia from "@/components/SocialMedia";
 import React, { useEffect, useRef, useState } from "react";
 import {
-  FaCircleCheck,
   FaEnvelope,
   FaFax,
   FaLocationDot,
   FaPhone,
   FaRegCircleCheck,
-  FaXmark,
 } from "react-icons/fa6";
 
 const Contact = () => {
-  const [showLogin, setShowLogin] = useState(false);
-  const [showSignUp, setShowSignUp] = useState(false);
+  
   const [showAlert, setShowAlert] = useState(false);
   const ref = useRef();
 
@@ -59,7 +52,6 @@ const Contact = () => {
         setSubject("");
       } else {
         const errorData = response.json();
-        // Handle unsuccessful registration
         console.error(errorData);
       }
     });
@@ -202,24 +194,6 @@ const Contact = () => {
       <SocialMedia />
       <Footer />
 
-      {showLogin && (
-        <Login
-          onClose={() => setShowLogin(false)}
-          switchToSignUp={() => {
-            setShowLogin(false);
-            setShowSignUp(true);
-          }}
-        />
-      )}
-      {showSignUp && (
-        <SignUp
-          onClose={() => setShowSignUp(false)}
-          switchToLogin={() => {
-            setShowSignUp(false);
-            setShowLogin(true);
-          }}
-        />
-      )}
     </>
   );
 };
