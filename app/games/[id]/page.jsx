@@ -1,6 +1,4 @@
 "use client";
-
-import { BASE_URL } from "@/api/BaseConfig";
 import Footer from "@/components/Layout/Footer";
 import Header from "@/components/Layout/Header";
 import Heading from "@/components/UI/Heading";
@@ -15,7 +13,6 @@ import SystemRequirementsSkeleton from "@/components/Skeletons/SystemRequirement
 import SocialMedia from "@/components/Layout/SocialMedia";
 import {
   addToCart,
-  clearCart,
   decreaseQuantity,
   increaseQuantity,
   removeFromCart,
@@ -40,6 +37,7 @@ import {
   FaYoutube,
 } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchData } from "@/services/api";
 
 const GameSingle = () => {
   const { id } = useParams();
@@ -48,10 +46,9 @@ const GameSingle = () => {
   const [isGameLoading, setIsGameLoading] = useState(true);
   const [hasFetched, setHasFetched] = useState(false);
   const router = useRouter();
-  const getGame = async (id) => {
+  const loadGame = async (id) => {
     try {
-      const response = await fetch(BASE_URL + `Game/${id}`);
-      const result = await response.json();
+      const result = await fetchData(`Game/${id}`);
 
       if (result?.data) {
         setGame(result.data);
@@ -67,7 +64,7 @@ const GameSingle = () => {
 
   useEffect(() => {
     if (id) {
-      getGame(id);
+      loadGame(id);
     }
   }, [id]);
 
@@ -110,6 +107,7 @@ const GameSingle = () => {
         <div className="single-game min-[1200px]:max-w-[1140px] max-w-full mx-auto px-[1.154rem] md:px-[2.308rem] min-[1200px]:px-[15px] py-[80px]">
           <div className="grid lg:grid-cols-[65%_32%] grid-cols-1 lg:gap-[3%]">
             <div className="left-side">
+              {/* Game Image */}
               <div className="game-image mb-[30px]">
                 {isGameLoading ? (
                   <GamePhotoSkeleton />
@@ -124,7 +122,9 @@ const GameSingle = () => {
                   />
                 )}
               </div>
+              
               <div className="about-game md:mb-[30px] mb-[50px] md:p-[30px] md:pr-[45px] pr-[10px] md:shadow-[0_0_3rem_rgba(0,0,0,0.23)]">
+                {/* Game Description */}
                 <h1 className="text-[24px] font-black uppercase mb-5 flex items-center">
                   {isGameLoading ? (
                     <GameNameSkeleton />
@@ -140,6 +140,8 @@ const GameSingle = () => {
                   <p className="text-[14px] mb-5">{game?.longDescription}</p>
                 )}
               </div>
+
+              {/* Game System Requirements */}
               <div
                 className="details md:p-[30px] md:pr-[45px] pr-[10px] md:shadow-[0_0_3rem_rgba(0,0,0,0.23)] md:mb-[30px] mb-[50px]"
                 id="buy"
@@ -257,6 +259,7 @@ const GameSingle = () => {
                   </div>
                 )}
 
+                {/* Game Price and Adding to Cart */}
                 <div className="buy flex items-center justify-between">
                   <div className="price">
                     <h2 className="uppercase text-[18px] font-bold">
@@ -325,6 +328,7 @@ const GameSingle = () => {
             </div>
             <div className="right-side ">
               <div className="sticky top-0">
+                {/* Game Details */}
                 <div className="details p-[30px] pr-[45px] shadow-[0_0_3rem_rgba(0,0,0,0.23)] mb-[30px]">
                   <h1 className="font-black text-[24px] mb-5">
                     GAME <span className="text-yel">DETAILS</span>
@@ -444,6 +448,8 @@ const GameSingle = () => {
                     </ul>
                   )}
                 </div>
+
+                {/* Game Languages */}
                 <div className="languages p-[30px] pr-[45px] shadow-[0_0_3rem_rgba(0,0,0,0.23)]">
                   <h1 className="font-black text-[24px] mb-5 uppercase">
                     languages

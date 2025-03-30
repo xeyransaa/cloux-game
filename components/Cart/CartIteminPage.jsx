@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { BASE_URL } from "@/api/BaseConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { FaMinus, FaPlus, FaTrashCan } from "react-icons/fa6";
 import {
@@ -9,23 +8,21 @@ import {
   removeFromCart,
 } from "@/Redux/features/Cart/CartSlice";
 import CartItemSkeleton from "../Skeletons/CartItemSkeleton";
+import { fetchData } from "@/services/api";
 
 const CartIteminPage = ({ gameId }) => {
   const [game, setGame] = useState([]);
   const cartItems = useSelector((state) => state.cart.cartItems);
   const gameInCart = cartItems.find((c) => c.id == gameId);
   const [isGameLoading, setIsGameLoading] = useState(true);
-  const getGame = (gameId) => {
-    fetch(BASE_URL + `game/${gameId}`)
-      .then((c) => c.json())
-      .then((c) => {
-        setGame(c.data);
-        setIsGameLoading(false);
-      });
+  const loadGame = async (gameId) => {
+    const data = await fetchData(`game/${gameId}`);
+    setGame(data.data);
+    setIsGameLoading(false);
   };
 
   useEffect(() => {
-    getGame(gameId);
+    loadGame(gameId);
   }, [gameId]);
   const dispatch = useDispatch();
 

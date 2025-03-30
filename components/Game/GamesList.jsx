@@ -1,10 +1,7 @@
 "use client";
-import { BASE_URL } from "@/api/BaseConfig";
 
 import GameDetail from "@/components/Game/GameDetail";
-
 import PlatformButton from "@/components/UI/PlatformButton";
-
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import {
@@ -14,6 +11,7 @@ import {
   FaAnglesRight,
 } from "react-icons/fa6";
 import GameDetailSkeleton from "../Skeletons/GameDetailSkeleton";
+import { fetchData } from "@/services/api";
 
 const GamesList = () => {
   const searchParams = useSearchParams();
@@ -22,13 +20,11 @@ const GamesList = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [displayedGames, setDisplayedGames] = useState([]);
-  const getGamesByPage = (pageNumber, gamesPerPage) => {
-    fetch(
-      BASE_URL +
-        `Game/page/?pageNumber=${pageNumber}&gamesPerPage=${gamesPerPage}`
-    )
-      .then((c) => c.json())
-      .then((c) => setDisplayedGames(c));
+  const [isDisplayedGamesLoading, setIsDisplayedGamesLoading] = useState(true);
+  const loadGamesByPage = async (pageNumber, gamesPerPage) => {
+    const data = await fetchData(`Game/page/?pageNumber=${pageNumber}&gamesPerPage=${gamesPerPage}`)
+    setDisplayedGames(data);
+    setIsDisplayedGamesLoading(false)
   };
 
   const changePage = (newPage) => {
@@ -36,18 +32,17 @@ const GamesList = () => {
   };
 
   const [games, setGames] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const getGames = () => {
-    fetch(BASE_URL + "Game")
-      .then((c) => c.json())
-      .then((c) => {
-        setGames(c);
-        setLoading(false);
-      });
+  const [isGamesLoading, setIsGamesLoading] = useState(true);
+  const loadGames = async () => {
+    const data = await fetchData("Game")
+    
+        setGames(data);
+        setIsGamesLoading(false);
+    
   };
   useEffect(() => {
-    getGames();
-    getGamesByPage(pageNumber, gamesPerPage);
+    loadGames();
+    loadGamesByPage(pageNumber, gamesPerPage);
   }, [pageNumber]);
 
   const pagesCount = Math.ceil(games.length / gamesPerPage);
@@ -64,11 +59,11 @@ const GamesList = () => {
     <section className="main">
       <div className="games min-[1200px]:max-w-[1140px] max-w-full mx-auto px-[1.154rem] md:px-[2.308rem] min-[1200px]:px-[15px] py-[80px]">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-          {loading
+          {isGamesLoading || isDisplayedGamesLoading
             ? Array.from({ length: 6 }).map((i) => <GameDetailSkeleton />)
             : displayedGames.map((g) => <GameDetail key={g.id} {...g} />)}
         </div>
-        {games.length > gamesPerPage && (
+        {games.length > gamesPerPage && !isDisplayedGamesLoading && !isGamesLoading && (
           <ul className="unstyled flex flex-row flex-wrap items-center justify-center mt-[50px] gap-y-[20px] px-2">
             <li
               className="relative"

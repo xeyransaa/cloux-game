@@ -1,4 +1,5 @@
 import React from 'react'
+import { FaGamepad, FaRegLifeRing, FaRocket } from 'react-icons/fa6'
 
 const AboutIcons = () => {
     const icons = [

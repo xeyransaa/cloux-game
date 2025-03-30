@@ -1,6 +1,5 @@
-import { BASE_URL } from "@/api/BaseConfig";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   FaAmazon,
   FaApple,
@@ -10,23 +9,11 @@ import {
   FaLocationDot,
   FaPaypal,
   FaPhoneFlip,
-  FaRegClock,
   FaSteamSymbol,
   FaWindows,
 } from "react-icons/fa6";
 
 const Footer = () => {
-  const [blogs, setBlogs] = useState([]);
-  const getBlogs = () => {
-    fetch(BASE_URL + "Blog")
-      .then((c) => c.json())
-      .then((c) => setBlogs(c));
-  };
-
-  useEffect(() => {
-    getBlogs();
-  }, []);
-
   return (
     <footer>
       <div className="top-footer bg-[#111111] px-[1.154rem] md:px-[2.308rem] min-[1200px]:px-[15px] py-[70px]">

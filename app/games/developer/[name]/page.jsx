@@ -1,5 +1,4 @@
 "use client";
-import { BASE_URL } from "@/api/BaseConfig";
 import Footer from "@/components/Layout/Footer";
 import GameDetail from "@/components/Game/GameDetail";
 import Header from "@/components/Layout/Header";
@@ -9,22 +8,20 @@ import GameDetailSkeleton from "@/components/Skeletons/GameDetailSkeleton";
 import SocialMedia from "@/components/Layout/SocialMedia";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { fetchData } from "@/services/api";
 
 const DeveloperGames = () => {
   const { name } = useParams();
   const [developerGames, setDeveloperGames] = useState([]);
   const [isGamesLoading, setIsGamesLoading] = useState(true);
-  const getDeveloperGames = (name) => {
-    fetch(BASE_URL + `Developer/name/${name}`)
-      .then((c) => c.json())
-      .then((p) => {
-        setDeveloperGames(p.data.games);
-        setIsGamesLoading(false);
-      });
+  const loadDeveloperGames = async (name) => {
+    const data = await fetchData(`Developer/name/${name}`);
+    setDeveloperGames(data.data.games);
+    setIsGamesLoading(false);
   };
 
   useEffect(() => {
-    getDeveloperGames(name);
+    loadDeveloperGames(name);
   }, [name]);
 
   const decodedName = decodeURIComponent(name);

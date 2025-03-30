@@ -12,10 +12,10 @@ import {
   FaYoutube,
 } from "react-icons/fa6";
 
-import { BASE_URL } from "@/api/BaseConfig";
 import { usePathname, useRouter } from "next/navigation";
 import Cart from "../Cart/Cart";
 import { useSelector } from "react-redux";
+import { fetchData } from "@/services/api";
 
 const Header = () => {
   const [links, setLinks] = useState([]);
@@ -33,10 +33,9 @@ const Header = () => {
     setShowCart(false);
   };
 
-  const getLinks = () => {
-    fetch(BASE_URL + "SocialMedia")
-      .then((c) => c.json())
-      .then((c) => setLinks(c));
+  const loadLinks = async () => {
+    const data = await fetchData("SocialMedia");
+    setLinks(data)
   };
 
   const ref = useRef(null);
@@ -55,7 +54,7 @@ const Header = () => {
   }, [showCart]);
 
   useEffect(() => {
-    getLinks();
+    loadLinks();
   }, []);
 
   const cartItems = useSelector((state) => state.cart.cartItems);

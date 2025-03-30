@@ -18,43 +18,59 @@ const Contact = () => {
   const [showAlert, setShowAlert] = useState(false);
   const ref = useRef();
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [msg, setMsg] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [subject, setSubject] = useState("");
+  const [contactData, setContactData] = useState({
+    name: "",
+    email: "",
+    msg: "",
+    phoneNumber: "",
+    subject: "",
+  });
 
-  const submitForm = (e) => {
+  const { name, email, phoneNumber, subject, msg } = contactData;
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setContactData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const submitForm = async (e) => {
     e.preventDefault();
     const data = {
       name,
       email,
-
       phoneNumber,
       subject,
       msg,
     };
 
-    fetch(`${BASE_URL}Message`, {
+
+
+    const response = await fetch(`${BASE_URL}Message`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    }).then((response) => {
+    });
+    
       if (response.ok) {
         setShowAlert(true);
-        setEmail("");
-        setMsg("");
-        setName("");
-        setPhoneNumber("");
-        setSubject("");
+        setContactData({
+          name: "",
+          email: "",
+          msg: "",
+          phoneNumber: "",
+          subject: "",
+        })
       } else {
         const errorData = response.json();
         console.error(errorData);
       }
-    });
-  };
+    };
+  
   const handleClickOutside = (event) => {
     if (ref.current && !ref.current.contains(event.target)) {
       setShowAlert(false);
@@ -70,41 +86,47 @@ const Contact = () => {
       <section className="main">
         <div className="contact-info min-[1200px]:max-w-[1140px] max-w-full mx-auto px-[1.154rem] md:px-[2.308rem] min-[1200px]:px-[15px] py-[80px]">
           <div className="md:flex justify-between">
+            {/* Contact Form */}
             <div className="message-form mr-[20px] mb-[70px] w-full md:w-[60%]">
               <form onSubmit={submitForm} method="post" action="">
                 <div className="grid grid-cols-2 gap-4 mb-5">
                   <input
                     type="text"
+                    name="name"
                     value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={handleChange}
                     className="text-[14px] mb-[25px] px-[20px] py-[10px] border-[1px] border-[rgba(134,132,132,0.59)] outline-none"
                     placeholder="Name"
                   />
                   <input
                     type="text"
+                    name="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={handleChange}
                     className="text-[14px] mb-[25px] px-[20px] py-[10px] border-[1px] border-[rgba(134,132,132,0.59)] outline-none"
                     placeholder="Email Address"
                   />
                   <input
                     type="text"
+                    name="phoneNumber"
                     value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    onChange={handleChange}
                     className="text-[14px] mb-[25px] px-[20px] py-[10px] border-[1px] border-[rgba(134,132,132,0.59)] outline-none"
                     placeholder="Phone Number"
                   />
                   <input
                     type="text"
+                    name="subject"
                     value={subject}
-                    onChange={(e) => setSubject(e.target.value)}
+                    onChange={handleChange}
                     className="text-[14px] mb-[25px] px-[20px] py-[10px] border-[1px] border-[rgba(134,132,132,0.59)] outline-none"
                     placeholder="Subject"
                   />
 
                   <textarea
+                    name="msg"
                     value={msg}
-                    onChange={(e) => setMsg(e.target.value)}
+                    onChange={handleChange}
                     className="col-span-2 h-[130px] text-[14px] mb-[25px] px-[20px] py-[10px] border-[1px] border-[rgba(134,132,132,0.59)] outline-none"
                     placeholder="Message"
                   />
@@ -116,6 +138,7 @@ const Contact = () => {
                   Submit
                 </button>
               </form>
+                {/* Success Alert */}
               {showAlert && (
                 <div
                   ref={ref}
@@ -140,6 +163,7 @@ const Contact = () => {
                 </div>
               )}
             </div>
+            {/* Contact Details */}
             <div className="details w-full md:w-[37%]">
               <div className="flex items-center mb-[15px]">
                 <FaLocationDot className="mr-[10px] text-yel" />
@@ -180,6 +204,7 @@ const Contact = () => {
             </div>
           </div>
         </div>
+        {/* Google Map */}
         <div className="map">
           <iframe
             className="w-full"
