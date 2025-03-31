@@ -7,7 +7,7 @@ import Heading from "@/components/UI/Heading";
 import Newsletter from "@/components/Layout/Newsletter";
 import SocialMedia from "@/components/Layout/SocialMedia";
 
-import React, { Suspense, useState } from "react";
+import React, { Suspense } from "react";
 
 const Games = () => {
   return (

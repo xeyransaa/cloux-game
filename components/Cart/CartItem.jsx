@@ -33,59 +33,56 @@ const CartItem = ({ gameId }) => {
 
   return (
     <div className="flex justify-between mb-[15px]">
-      
-        {/* Game Image */}
+      {/* Game Image */}
 
-          <Link href={`/games/${game.id}`} className="mr-[10px] w-[15%] ">
-            <Image
-              src={`/img/${game.posterUrl}`}
-              width={0}
-              height={0}
-              sizes="100vw"
-              alt="game-photo"
-              style={{ width: "100%", height: "auto" }}
-            />
-          </Link>
-          {/* Game Details */}
-          <div className="w-[70%]">
-            <div className="title font-semibold hover:text-yel transition duration-200 uppercase">
-              <Link href={`/games/${game.id}`}>{game.name}</Link>
-            </div>
-            <div className="quantity text-[14px]">
-              {gameInCart.quantity} x ${game.discountedPrice}
-            </div>
-          </div>
-          {/* Quantity Controls */}
-          <div className="flex quantity-change items-center gap-[10px] mr-[20px]">
-            <button
-              className="decrement"
-              onClick={() => dispatch(decreaseQuantity(game.id))}
-            >
-              <FaMinus />
-            </button>
+      <Link href={`/games/${game.id}`} className="mr-[10px] w-[15%] ">
+        <Image
+          src={`/img/${game.posterUrl}`}
+          width={0}
+          height={0}
+          sizes="100vw"
+          alt="game-photo"
+          style={{ width: "100%", height: "auto" }}
+        />
+      </Link>
+      {/* Game Details */}
+      <div className="w-[70%]">
+        <div className="title font-semibold hover:text-yel transition duration-200 uppercase">
+          <Link href={`/games/${game.id}`}>{game.name}</Link>
+        </div>
+        <div className="quantity text-[14px]">
+          {gameInCart.quantity} x ${game.discountedPrice}
+        </div>
+      </div>
+      {/* Quantity Controls */}
+      <div className="flex quantity-change items-center gap-[10px] mr-[20px]">
+        <button
+          className="decrement"
+          onClick={() => dispatch(decreaseQuantity(game.id))}
+        >
+          <FaMinus />
+        </button>
 
-            <span className="border p-[5px] w-[40px] text-center">
-              {gameInCart.quantity}
-            </span>
-            <button
-              className="increment"
-              onClick={() => dispatch(increaseQuantity(game.id))}
-            >
-              <FaPlus />
-            </button>
-            <div className="remove mt-[2px]">
-              <button
-                className="text-yel flex items-center"
-                onClick={() => {
-                  dispatch(removeFromCart(game.id));
-                }}
-              >
-                <FaTrashCan />
-              </button>
-            </div>
-          </div>
-        
-      
+        <span className="border p-[5px] w-[40px] text-center">
+          {gameInCart.quantity}
+        </span>
+        <button
+          className="increment"
+          onClick={() => dispatch(increaseQuantity(game.id))}
+        >
+          <FaPlus />
+        </button>
+        <div className="remove mt-[2px]">
+          <button
+            className="text-yel flex items-center"
+            onClick={() => {
+              dispatch(removeFromCart(game.id));
+            }}
+          >
+            <FaTrashCan />
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

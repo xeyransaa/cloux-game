@@ -1,10 +1,10 @@
-import React from 'react'
+import React from "react";
 
 const Newsletter = () => {
   return (
     <section className="newsletter bg-[url('/img/block-bg-1920x209.jpg')] bg-cover bg-center bg-no-repeat relative before:absolute before:top-0 before:left-0 before:bg-yel before:opacity-75 before:w-full before:h-full px-[1.154rem] md:px-[2.308rem] min-[1200px]:px-[15px] py-[70px]">
-        <div className="relative z-10 min-[1200px]:max-w-[1140px] max-w-full mx-auto">
-          <div className='flex justify-center items-center'>
+      <div className="relative z-10 min-[1200px]:max-w-[1140px] max-w-full mx-auto">
+        <div className="flex justify-center items-center">
           <form
             action=""
             className="grid grid-cols-2 grid-rows-3 md:grid-cols-4 md:grid-rows-2 lg:grid-cols-5 lg:grid-rows-1 gap-5 items-center"
@@ -35,12 +35,10 @@ const Newsletter = () => {
               Submit
             </button>
           </form>
-
-          </div>
-          
         </div>
-      </section>
-  )
-}
+      </div>
+    </section>
+  );
+};
 
-export default Newsletter
+export default Newsletter;

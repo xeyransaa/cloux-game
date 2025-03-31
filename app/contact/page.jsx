@@ -46,8 +46,6 @@ const Contact = () => {
       msg,
     };
 
-
-
     const response = await fetch(`${BASE_URL}Message`, {
       method: "POST",
       headers: {
@@ -55,22 +53,22 @@ const Contact = () => {
       },
       body: JSON.stringify(data),
     });
-    
-      if (response.ok) {
-        setShowAlert(true);
-        setContactData({
-          name: "",
-          email: "",
-          msg: "",
-          phoneNumber: "",
-          subject: "",
-        })
-      } else {
-        const errorData = response.json();
-        console.error(errorData);
-      }
-    };
-  
+
+    if (response.ok) {
+      setShowAlert(true);
+      setContactData({
+        name: "",
+        email: "",
+        msg: "",
+        phoneNumber: "",
+        subject: "",
+      });
+    } else {
+      const errorData = response.json();
+      console.error(errorData);
+    }
+  };
+
   const handleClickOutside = (event) => {
     if (ref.current && !ref.current.contains(event.target)) {
       setShowAlert(false);
@@ -138,7 +136,7 @@ const Contact = () => {
                   Submit
                 </button>
               </form>
-                {/* Success Alert */}
+              {/* Success Alert */}
               {showAlert && (
                 <div
                   ref={ref}

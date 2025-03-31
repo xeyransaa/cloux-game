@@ -3,10 +3,16 @@ import Link from "next/link";
 import React from "react";
 import { FaTags, FaTv } from "react-icons/fa6";
 
-const GameCoverDetail = ({id, name, platformNames, categoryNames, posterUrl}) => {
+const GameCoverDetail = ({
+  id,
+  name,
+  platformNames,
+  categoryNames,
+  posterUrl,
+}) => {
   return (
     <div className="relative overflow-hidden shadow-[0_0_3rem_rgba(0,0,0,0.23)] group cursor-pointer">
-      <Link href = {`/games/${id}`}>
+      <Link href={`/games/${id}`}>
         {/* Game Poster */}
         <div className="relative after:content-[''] after:absolute after:top-0 after:left-0 after:w-full after:h-full after:bg-custom after:opacity-70">
           <Image
@@ -18,7 +24,7 @@ const GameCoverDetail = ({id, name, platformNames, categoryNames, posterUrl}) =>
             style={{ width: "100%", height: "auto" }}
           />
         </div>
-{/* Game Info */}
+        {/* Game Info */}
         <div className="game-info absolute bottom-[30px] left-[30px] right-[30px] group-hover:translate-y-[150px] transition-all duration-500">
           <div className="game-title uppercase mb-[8px] text-white text-[20px] font-black">
             {name}

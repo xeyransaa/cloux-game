@@ -13,11 +13,11 @@ import GameDetailSkeleton from "@/components/Skeletons/GameDetailSkeleton";
 const CategoryGames = () => {
   const { name } = useParams();
   const [categoryGames, setCategoryGames] = useState([]);
-  const [isCategoryGamesLoading, setIsCategoryGamesLoading] = useState(true)
+  const [isCategoryGamesLoading, setIsCategoryGamesLoading] = useState(true);
   const loadCategoryGames = async (name) => {
-    const data = await fetchData(`Category/name/${name}`)
+    const data = await fetchData(`Category/name/${name}`);
     setCategoryGames(data.data.games);
-    setIsCategoryGamesLoading(false)
+    setIsCategoryGamesLoading(false);
   };
 
   useEffect(() => {
@@ -33,12 +33,13 @@ const CategoryGames = () => {
       <section className="main">
         <div className="games min-[1200px]:max-w-[1140px] max-w-full mx-auto px-[1.154rem] md:px-[2.308rem] min-[1200px]:px-[15px] py-[80px]">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {isCategoryGamesLoading ? Array(8).fill(null).map((_, i) => <GameDetailSkeleton key={i}/>) : ([...categoryGames]
-              ?.sort((a, b) => (a.dateCreated > b.dateCreated ? 1 : -1))
-              .map((g) => (
-                <GameDetail {...g} />
-              ))) }
-            
+            {isCategoryGamesLoading
+              ? Array(8)
+                  .fill(null)
+                  .map((_, i) => <GameDetailSkeleton key={i} />)
+              : [...categoryGames]
+                  ?.sort((a, b) => (a.dateCreated > b.dateCreated ? 1 : -1))
+                  .map((game) => <GameDetail {...game} />)}
           </div>
         </div>
       </section>

@@ -35,7 +35,7 @@ const Header = () => {
 
   const loadLinks = async () => {
     const data = await fetchData("SocialMedia");
-    setLinks(data)
+    setLinks(data);
   };
 
   const ref = useRef(null);

@@ -122,7 +122,7 @@ const GameSingle = () => {
                   />
                 )}
               </div>
-              
+
               <div className="about-game md:mb-[30px] mb-[50px] md:p-[30px] md:pr-[45px] pr-[10px] md:shadow-[0_0_3rem_rgba(0,0,0,0.23)]">
                 {/* Game Description */}
                 <h1 className="text-[24px] font-black uppercase mb-5 flex items-center">

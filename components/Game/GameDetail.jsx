@@ -30,7 +30,10 @@ const GameDetail = ({
         <div className="flex items-center absolute bottom-5 right-5 text-white text-[10px]">
           {categoryNames?.map((categoryName, index) => (
             <React.Fragment key={categoryName}>
-              <Link href={`/games/category/${categoryName}`} className="uppercase">
+              <Link
+                href={`/games/category/${categoryName}`}
+                className="uppercase"
+              >
                 {categoryName}
               </Link>
               {index < categoryNames.length - 1 && (

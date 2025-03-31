@@ -39,7 +39,7 @@ const DeveloperGames = () => {
                 })
               : [...developerGames]
                   ?.sort((a, b) => (a.dateCreated > b.dateCreated ? 1 : -1))
-                  .map((g) => <GameDetail {...g} />)}
+                  .map((game) => <GameDetail {...game} />)}
           </div>
         </div>
       </section>

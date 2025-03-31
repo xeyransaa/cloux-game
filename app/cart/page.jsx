@@ -13,7 +13,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 const CartPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
-  const totalQuantity = cartItems.reduce((sum, i) => sum + i.quantity, 0);
   const totalPrice = cartItems.reduce(
     (sum, i) => sum + i.quantity * i.price,
     0
