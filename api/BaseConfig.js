@@ -1,1 +1,1 @@
-export const BASE_URL="https://localhost:7191/api/"
+export const BASE_URL="https://cloux-api-rp99.onrender.com/api/"
