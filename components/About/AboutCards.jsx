@@ -5,7 +5,7 @@ import FancyButton from "../UI/FancyButton";
 const AboutCards = () => {
   const cards = [
     {
-      title: "CLOUX GAMES",
+      title: "GAMEHAZE GAMES",
       subtitle: "OUR ALL GAMES",
       description:
         "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptate ullam error, eius dolore deserunt nostrum consectetur perspiciatis sunt!",
@@ -13,7 +13,7 @@ const AboutCards = () => {
       button: { content: "all games", link: "/games" },
     },
     {
-      title: "CLOUX TEAM",
+      title: "GAMEHAZE TEAM",
       subtitle: "OUR DEVELOPER TEAM",
       description:
         "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptate ullam error, eius dolore deserunt nostrum consectetur perspiciatis sunt!",

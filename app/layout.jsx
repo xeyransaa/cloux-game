@@ -6,7 +6,7 @@ import ReduxProvider from "@/components/Redux/ReduxProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Cloux - Game Center",
+  title: "GameHaze - Game Center",
   description: "Game website",
   visualViewport: "width=device-width, initial-scale=1.0",
 };

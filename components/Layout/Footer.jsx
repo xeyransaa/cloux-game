@@ -173,10 +173,10 @@ const Footer = () => {
                   <li className="flex items-center mb-[10px]">
                     <FaEnvelope className="text-yel mr-[10px]" />
                     <a
-                      href="mailto:info@cloux.com"
+                      href="mailto:info@gamehaze.com"
                       className="text-white text-[14px] hover:text-yel transition duration-200"
                     >
-                      info@cloux.com
+                      info@gamehaze.com
                     </a>
                   </li>
                   <li className="flex items-center mb-[10px]">
@@ -214,7 +214,7 @@ const Footer = () => {
               <a href="">
                 <Image
                   alt="logo"
-                  src="/img/logo-2.png"
+                  src="/img/logo.png"
                   width={0}
                   height={0}
                   sizes="100vw"
@@ -222,7 +222,7 @@ const Footer = () => {
                 />
               </a>
               <p className="text-[13px] m-[15px]">
-                Copyright © 2018 Cloux - All rights reserved.
+                Copyright © 2018 GameHaze - All rights reserved.
               </p>
             </div>
           </div>

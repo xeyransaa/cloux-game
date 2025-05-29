@@ -7,7 +7,7 @@ import AboutCards from "@/components/About/AboutCards";
 import PlatformGames from "@/components/Home/PlatformGames";
 import NewGame from "@/components/Home/NewGame";
 import FeaturedGames from "@/components/Home/FeaturedGames";
-import AboutCloux from "@/components/Home/AboutCloux";
+import AboutGamehaze from "@/components/Home/AboutGamehaze";
 import Newsletter from "@/components/Layout/Newsletter";
 import SocialMedia from "@/components/Layout/SocialMedia";
 import Footer from "@/components/Layout/Footer";
@@ -57,7 +57,7 @@ const Home = () => {
       />
       <NewGame />
       <FeaturedGames featured={data.featured} isLoading={loading.featured} />
-      <AboutCloux />
+      <AboutGamehaze />
       <Newsletter />
       <SocialMedia />
       <Footer />

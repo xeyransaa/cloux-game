@@ -172,10 +172,10 @@ const Contact = () => {
               <div className="flex items-center mb-[15px]">
                 <FaEnvelope className="mr-[10px] text-yel" />
                 <a
-                  href="mailto:info@cloux.com"
+                  href="mailto:info@gamehaze.com"
                   className="text-[14px] hover:text-yel transition duration-200"
                 >
-                  info@cloux.com
+                  info@gamehaze.com
                 </a>
               </div>
               <div className="flex items-center mb-[15px]">

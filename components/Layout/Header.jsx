@@ -69,7 +69,7 @@ const Header = () => {
               <div className="logo">
                 <a href="/">
                   <Image
-                    src="/img/logo-2.png"
+                    src="/img/logo.png"
                     width={0}
                     height={0}
                     sizes="100vw"
@@ -167,7 +167,7 @@ const Header = () => {
             <div className="logo">
               <a href="/">
                 <Image
-                  src="/img/logo.png"
+                  src="/img/logo-black.png"
                   width={0}
                   height={0}
                   sizes="100vw"
@@ -203,7 +203,7 @@ const Header = () => {
               <div className="mb-[25px] flex justify-between items-center relative">
                 <a href="/">
                   <Image
-                    src="/img/logo.png"
+                    src="/img/logo-black.png"
                     width={0}
                     height={0}
                     sizes="100vw"
